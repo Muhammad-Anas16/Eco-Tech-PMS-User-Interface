@@ -1,17 +1,18 @@
 import Eco_Tech_Logo from "../assets/eco-tech-logo.png";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
-
 import { ArrowLeft, Bell, ChevronRight, Home } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import UserDropdown from "@/components/UserDropdown";
+import { logout } from "@/api/auth.api";
+import { showToast } from "@/lib/toast";
+import { useAuth } from "@/context/AuthContext";
 
 const Header = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-
   const [time, setTime] = useState("");
+  const { user, isAuthenticated, clearUser } = useAuth();
 
   const today = new Date().toLocaleDateString("en-AU", {
     weekday: "long",
@@ -51,8 +52,26 @@ const Header = () => {
           )
           .join(" / ");
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+
+      clearUser();
+
+      showToast.success("Logged out successfully");
+
+      navigate("/login", {
+        replace: true,
+      });
+    } catch (error) {
+      console.error(error);
+
+      showToast.error(error?.response?.data?.message || "Logout failed");
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-50 border-b bg-white/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b bg-white shadow-sm">
       {/* Top Header */}
 
       <div className="flex h-16 items-center justify-between px-6">
@@ -69,8 +88,9 @@ const Header = () => {
             <img
               src={Eco_Tech_Logo}
               alt="Logo"
-              className="flex h-11 w-11 items-center justify-center rounded-xl"
+              className="h-11 w-11 rounded-xl"
             />
+
             <div>
               <h1 className="text-lg font-bold text-slate-800">
                 Eco Technologies
@@ -88,18 +108,26 @@ const Header = () => {
             <Bell size={18} />
           </Button>
 
-          <UserDropdown
-            user={{
-              name: "Admin",
-              role: "Administrator",
-              initials: "A",
-            }}
-            onProfile={() => navigate("/profile")}
-            onSettings={() => navigate("/settings")}
-            onLogout={() => {
-              console.log("Logout");
-            }}
-          />
+          {isAuthenticated && (
+            <UserDropdown
+              user={{
+                name: user?.fullName || "User",
+
+                role: user?.role || "Employee",
+
+                initials:
+                  user?.fullName
+                    ?.split(" ")
+                    .map((item) => item[0])
+                    .join("")
+                    .toUpperCase()
+                    .slice(0, 2) || "U",
+              }}
+              onProfile={() => navigate("/profile")}
+              onSettings={() => navigate("/settings")}
+              onLogout={handleLogout}
+            />
+          )}
         </div>
       </div>
 

@@ -13,18 +13,28 @@ export const register = async (userData) => {
 // Login
 export const login = async (loginData) => {
   const response = await api.post("/login", loginData);
-  return response.data;
-};
 
-// Logged In User
-export const getMe = async () => {
-  const response = await api.get("/me");
+  // Token save karo, login ke turant baad
+  if (response.data?.data?.token) {
+    localStorage.setItem("token", response.data.data.token);
+  }
+
   return response.data;
 };
 
 // Logout
 export const logout = async () => {
   const response = await api.post("/logout");
+
+  // Frontend se token remove karo
+  localStorage.removeItem("token");
+
+  return response.data;
+};
+
+// Logged In User
+export const getMe = async () => {
+  const response = await api.get("/me");
   return response.data;
 };
 

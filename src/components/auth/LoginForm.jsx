@@ -20,13 +20,13 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { showToast } from "../../lib/toast";
+import { useNavigate } from "react-router";
+
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-
   const [loading, setLoading] = useState(false);
-
   const [roleOpen, setRoleOpen] = useState(false);
-
   const roles = [
     "admin",
     "plant_manager",
@@ -50,6 +50,8 @@ const LoginForm = () => {
       setLoading(true);
       const response = await login(data);
       showToast.success(response?.message || "Login Successful");
+      
+      navigate("/");
       form.reset();
     } catch (error) {
       console.log(error);

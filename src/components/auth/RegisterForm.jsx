@@ -21,8 +21,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { registerSchema } from "../../schema/AuthSchema";
 import { showToast } from "../../lib/toast";
+import { Link, useNavigate } from "react-router";
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [roleOpen, setRoleOpen] = useState(false);
@@ -36,14 +38,10 @@ const RegisterForm = () => {
 
   const form = useForm({
     resolver: zodResolver(registerSchema),
-
     defaultValues: {
       fullName: "",
-
       employeeId: "",
-
       role: "",
-
       password: "",
     },
   });
@@ -51,11 +49,9 @@ const RegisterForm = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-
       const response = await register(data);
-
       showToast.success(response?.message || "User Registered Successfully");
-
+      navigate("/login");
       form.reset();
     } catch (error) {
       console.log(error);
@@ -258,6 +254,13 @@ const RegisterForm = () => {
               )}
             </Button>
           </FieldGroup>
+
+          <p className="mt-2 capitalize">
+            if you already have a account{" "}
+            <Link className="font-bold underline" to={"/login"}>
+              Login
+            </Link>{" "}
+          </p>
         </form>
       </CardContent>
     </Card>
