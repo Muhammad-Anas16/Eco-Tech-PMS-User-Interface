@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-
-import { registerSchema } from "../schema/registerSchema";
-
+import { register } from "@/api/auth.api";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -22,9 +20,8 @@ import {
   FieldLabel,
   FieldError,
 } from "@/components/ui/field";
-
 import { Input } from "@/components/ui/input";
-
+import { registerSchema } from "../../schema/AuthSchema";
 import {
   Select,
   SelectTrigger,
@@ -36,8 +33,11 @@ import {
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(registerSchema),
+
     defaultValues: {
       firstName: "",
       employeeId: "",
@@ -47,16 +47,32 @@ const RegisterForm = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
 
-    toast.success("User Registered Successfully");
+      const response = await register(data);
 
-    form.reset();
+      console.log("Register Response:", response);
+
+      toast.success("User Registered Successfully");
+
+      form.reset();
+    } catch (error) {
+      console.log(error);
+
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Registration Failed",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Card className="w-full max-w-lg mx-auto shadow-lg">
+    <Card className="w-full max-w-md mx-auto">
       <CardHeader>
         <CardTitle>Create User</CardTitle>
 
@@ -193,8 +209,8 @@ const RegisterForm = () => {
 
                     <button
                       type="button"
-                      onClick={() => setShowPassword((prev) => !prev)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2"
                     >
                       {showPassword ? (
                         <EyeOff className="h-4 w-4" />
@@ -211,8 +227,15 @@ const RegisterForm = () => {
               )}
             />
 
-            <Button type="submit" className="w-full">
-              Create User
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                "Create User"
+              )}
             </Button>
           </FieldGroup>
         </form>

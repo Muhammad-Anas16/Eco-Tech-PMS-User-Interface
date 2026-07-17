@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-
-import { loginSchema } from "../schema/loginSchema";
-
+import { loginSchema } from "../../schema/AuthSchema";
+import { login } from "@/api/auth.api";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,7 +13,6 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-
 import {
   Field,
   FieldGroup,
@@ -35,8 +33,11 @@ import {
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(loginSchema),
+
     defaultValues: {
       employeeId: "",
       role: "",
@@ -44,38 +45,32 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
 
-    /*
-      Backend Example
+      const response = await login(data);
 
-      POST /api/auth/login
+      console.log("Login Response:", response);
 
-      {
-        employeeId,
-        role,
-        password
-      }
+      toast.success("Login Successful");
 
-      Backend verifies
+      form.reset();
+    } catch (error) {
+      console.log(error);
 
-      ✔ Employee Exists
-      ✔ Password Correct
-      ✔ Role Matches Database
-
-      If all true
-      Login Success
-
-      Otherwise
-      Invalid Credentials
-    */
-
-    toast.success("Login Successful");
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Invalid Credentials",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto shadow-lg">
+    <Card className="w-full max-w-md mx-auto">
       <CardHeader>
         <CardTitle>Plant Maintenance System</CardTitle>
 
@@ -160,8 +155,8 @@ const LoginForm = () => {
                     <Input
                       {...field}
                       type={showPassword ? "text" : "password"}
-                      className="pr-10"
                       placeholder="Enter Password"
+                      className="pr-10"
                       aria-invalid={fieldState.invalid}
                     />
 
@@ -185,7 +180,16 @@ const LoginForm = () => {
               )}
             />
 
-            <Button className="w-full">Sign In</Button>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Signing In...
+                </>
+              ) : (
+                "Sign In"
+              )}
+            </Button>
           </FieldGroup>
         </form>
       </CardContent>
