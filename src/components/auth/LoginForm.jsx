@@ -49,9 +49,16 @@ const LoginForm = () => {
     try {
       setLoading(true);
       const response = await login(data);
-      showToast.success(response?.message || "Login Successful");
+      if (response) {
+        // localStorage.setItem("after-login", "false");
+        localStorage.setItem("after-login", "true");
+      }
 
-      navigate("/");
+      // window.location.reload();
+      showToast.success(response?.message || "Login Successful");
+      navigate("/", {
+        replace: true,
+      });
       form.reset();
     } catch (error) {
       console.log(error);

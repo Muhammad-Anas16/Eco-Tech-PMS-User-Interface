@@ -55,11 +55,9 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       await logout();
-
+      localStorage.removeItem("after-login");
       clearUser();
-
       showToast.success("Logged out successfully");
-
       navigate("/login", {
         replace: true,
       });
