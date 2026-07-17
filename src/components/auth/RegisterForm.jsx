@@ -254,13 +254,18 @@ const RegisterForm = () => {
               )}
             </Button>
           </FieldGroup>
+          <div className="mt-6 flex items-center justify-center border-t pt-5">
+            <span className="text-sm text-muted-foreground">
+              Already have an account?
+            </span>
 
-          <p className="mt-2 capitalize">
-            if you already have a account{" "}
-            <Link className="font-bold underline" to={"/login"}>
-              Login
-            </Link>{" "}
-          </p>
+            <Link
+              to="/login"
+              className="ml-2 text-sm font-semibold text-primary hover:underline"
+            >
+              Sign In
+            </Link>
+          </div>
         </form>
       </CardContent>
     </Card>

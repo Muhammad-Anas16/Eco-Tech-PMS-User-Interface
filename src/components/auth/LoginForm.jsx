@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { showToast } from "../../lib/toast";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ const LoginForm = () => {
       setLoading(true);
       const response = await login(data);
       showToast.success(response?.message || "Login Successful");
-      
+
       navigate("/");
       form.reset();
     } catch (error) {
@@ -231,6 +231,18 @@ const LoginForm = () => {
               )}
             </Button>
           </FieldGroup>
+          <div className="mt-6 flex items-center justify-center border-t pt-5">
+            <span className="text-sm text-muted-foreground">
+              Already have an account?
+            </span>
+
+            <Link
+              to="/register"
+              className="ml-2 text-sm font-semibold text-primary hover:underline"
+            >
+              Register
+            </Link>
+          </div>
         </form>
       </CardContent>
     </Card>

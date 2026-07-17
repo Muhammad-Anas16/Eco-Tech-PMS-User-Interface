@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+// import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import ModuleCard from "@/components/ModuleCard";
 import modules from "@/data/modules";
@@ -9,7 +9,7 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-slate-100">
-      <Header />
+      {/* <Header /> */}
 
       <main className="mx-auto flex max-w-7xl flex-col gap-8 p-6 lg:p-8">
         {/* Hero Section */}
