@@ -66,16 +66,11 @@ const Header = () => {
           )}
 
           <Link to="/" className="flex items-center gap-3">
-            {/* <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-600 font-bold text-white shadow">
-              PMS
-            </div> */}
-
             <img
               src={Eco_Tech_Logo}
               alt="Logo"
               className="flex h-11 w-11 items-center justify-center rounded-xl"
             />
-
             <div>
               <h1 className="text-lg font-bold text-slate-800">
                 Eco Technologies

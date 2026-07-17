@@ -1,22 +1,22 @@
 import { Link } from "react-router";
-import { Home, TriangleAlert } from "lucide-react";
+import { Home, Pickaxe } from "lucide-react";
 
 const NotFoundPage = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-100 px-6">
       <div className="w-full max-w-xl rounded-3xl border bg-white p-10 text-center shadow-lg">
         <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-red-100">
-          <TriangleAlert size={50} className="text-red-600" />
+          <Pickaxe size={50} className="text-red-600" />
         </div>
 
         <h1 className="mt-8 text-7xl font-extrabold text-slate-800">404</h1>
 
         <h2 className="mt-3 text-2xl font-semibold text-slate-700">
-          Page Not Found
+          Work in progress
         </h2>
 
         <p className="mt-4 text-slate-500">
-          The page you're looking for doesn't exist.
+          We're still building this page. Check back soon
         </p>
 
         <Link
