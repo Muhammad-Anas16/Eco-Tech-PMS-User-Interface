@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { Eye, EyeOff, Loader2, Check } from "lucide-react";
+
 import { register } from "@/api/auth.api";
 import { Button } from "@/components/ui/button";
-
 import {
   Card,
   CardContent,
@@ -13,7 +12,6 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-
 import {
   Field,
   FieldGroup,
@@ -22,27 +20,30 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { registerSchema } from "../../schema/AuthSchema";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
+import { showToast } from "../../lib/toast";
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-
   const [loading, setLoading] = useState(false);
+  const [roleOpen, setRoleOpen] = useState(false);
+  const roles = [
+    "admin",
+    "plant_manager",
+    "maintenance_engineer",
+    "supervisor",
+    "technician",
+  ];
 
   const form = useForm({
     resolver: zodResolver(registerSchema),
 
     defaultValues: {
-      firstName: "",
+      fullName: "",
+
       employeeId: "",
-      email: "",
+
       role: "",
+
       password: "",
     },
   });
@@ -53,15 +54,13 @@ const RegisterForm = () => {
 
       const response = await register(data);
 
-      console.log("Register Response:", response);
-
-      toast.success("User Registered Successfully");
+      showToast.success(response?.message || "User Registered Successfully");
 
       form.reset();
     } catch (error) {
       console.log(error);
 
-      toast.error(
+      showToast.error(
         error?.response?.data?.message ||
           error?.message ||
           "Registration Failed",
@@ -84,14 +83,14 @@ const RegisterForm = () => {
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
-            {/* First Name */}
+            {/* Full Name */}
 
             <Controller
-              name="firstName"
+              name="fullName"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>First Name</FieldLabel>
+                  <FieldLabel>Full Name</FieldLabel>
 
                   <Input
                     {...field}
@@ -128,30 +127,7 @@ const RegisterForm = () => {
               )}
             />
 
-            {/* Email */}
-
-            <Controller
-              name="email"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Email</FieldLabel>
-
-                  <Input
-                    {...field}
-                    type="email"
-                    placeholder="employee@company.com"
-                    aria-invalid={fieldState.invalid}
-                  />
-
-                  {fieldState.error && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-
-            {/* Role */}
+            {/* Role Combobox */}
 
             <Controller
               name="role"
@@ -160,27 +136,71 @@ const RegisterForm = () => {
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Role</FieldLabel>
 
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger aria-invalid={fieldState.invalid}>
-                      <SelectValue placeholder="Select Role" />
-                    </SelectTrigger>
+                  <div className="relative">
+                    <Input
+                      value={field.value}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
 
-                    <SelectContent>
-                      <SelectItem value="admin">Admin</SelectItem>
+                        setRoleOpen(true);
+                      }}
+                      onFocus={() => setRoleOpen(true)}
+                      onBlur={() => {
+                        setTimeout(() => {
+                          setRoleOpen(false);
+                        }, 200);
+                      }}
+                      placeholder="Type or select role"
+                      aria-invalid={fieldState.invalid}
+                    />
 
-                      <SelectItem value="plant_manager">
-                        Plant Manager
-                      </SelectItem>
+                    {roleOpen && (
+                      <div className="absolute z-50 mt-1 w-full rounded-md border bg-background shadow-md overflow-hidden">
+                        {roles
 
-                      <SelectItem value="maintenance_engineer">
-                        Maintenance Engineer
-                      </SelectItem>
+                          .filter((role) =>
+                            role
 
-                      <SelectItem value="supervisor">Supervisor</SelectItem>
+                              .toLowerCase()
 
-                      <SelectItem value="technician">Technician</SelectItem>
-                    </SelectContent>
-                  </Select>
+                              .includes(field.value.toLowerCase()),
+                          )
+
+                          .map((role) => (
+                            <button
+                              key={role}
+                              type="button"
+                              onMouseDown={() => {
+                                field.onChange(role);
+
+                                setRoleOpen(false);
+                              }}
+                              className="flex w-full items-center justify-between px-3 py-2 text-sm hover:bg-muted"
+                            >
+                              <span>{role}</span>
+
+                              {field.value === role && (
+                                <Check className="h-4 w-4" />
+                              )}
+                            </button>
+                          ))}
+
+                        {roles.filter((role) =>
+                          role
+
+                            .toLowerCase()
+
+                            .includes(field.value.toLowerCase()),
+                        ).length === 0 &&
+                          field.value && (
+                            <div className="px-3 py-2 text-sm text-muted-foreground">
+                              Use custom role:
+                              <span className="font-medium">{field.value}</span>
+                            </div>
+                          )}
+                      </div>
+                    )}
+                  </div>
 
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />

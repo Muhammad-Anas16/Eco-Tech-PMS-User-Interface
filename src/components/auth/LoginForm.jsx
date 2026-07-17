@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { Eye, EyeOff, Loader2, Check } from "lucide-react";
 import { loginSchema } from "../../schema/AuthSchema";
 import { login } from "@/api/auth.api";
 import { Button } from "@/components/ui/button";
@@ -19,21 +18,22 @@ import {
   FieldLabel,
   FieldError,
 } from "@/components/ui/field";
-
 import { Input } from "@/components/ui/input";
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
+import { showToast } from "../../lib/toast";
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [loading, setLoading] = useState(false);
+
+  const [roleOpen, setRoleOpen] = useState(false);
+
+  const roles = [
+    "admin",
+    "plant_manager",
+    "maintenance_engineer",
+    "supervisor",
+    "technician",
+  ];
 
   const form = useForm({
     resolver: zodResolver(loginSchema),
@@ -48,18 +48,12 @@ const LoginForm = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-
       const response = await login(data);
-
-      console.log("Login Response:", response);
-
-      toast.success("Login Successful");
-
+      showToast.success(response?.message || "Login Successful");
       form.reset();
     } catch (error) {
       console.log(error);
-
-      toast.error(
+      showToast.error(
         error?.response?.data?.message ||
           error?.message ||
           "Invalid Credentials",
@@ -104,7 +98,7 @@ const LoginForm = () => {
               )}
             />
 
-            {/* Role */}
+            {/* Role Search + Select */}
 
             <Controller
               name="role"
@@ -113,27 +107,71 @@ const LoginForm = () => {
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Role</FieldLabel>
 
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger aria-invalid={fieldState.invalid}>
-                      <SelectValue placeholder="Select Role" />
-                    </SelectTrigger>
+                  <div className="relative">
+                    <Input
+                      value={field.value}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
 
-                    <SelectContent>
-                      <SelectItem value="admin">Admin</SelectItem>
+                        setRoleOpen(true);
+                      }}
+                      onFocus={() => setRoleOpen(true)}
+                      onBlur={() => {
+                        setTimeout(() => {
+                          setRoleOpen(false);
+                        }, 200);
+                      }}
+                      placeholder="Type or select role"
+                      aria-invalid={fieldState.invalid}
+                    />
 
-                      <SelectItem value="plant_manager">
-                        Plant Manager
-                      </SelectItem>
+                    {roleOpen && (
+                      <div className="absolute z-50 mt-1 w-full rounded-md border bg-background shadow-md overflow-hidden">
+                        {roles
 
-                      <SelectItem value="maintenance_engineer">
-                        Maintenance Engineer
-                      </SelectItem>
+                          .filter((role) =>
+                            role
 
-                      <SelectItem value="supervisor">Supervisor</SelectItem>
+                              .toLowerCase()
 
-                      <SelectItem value="technician">Technician</SelectItem>
-                    </SelectContent>
-                  </Select>
+                              .includes(field.value.toLowerCase()),
+                          )
+
+                          .map((role) => (
+                            <button
+                              key={role}
+                              type="button"
+                              onMouseDown={() => {
+                                field.onChange(role);
+
+                                setRoleOpen(false);
+                              }}
+                              className="flex w-full items-center justify-between px-3 py-2 text-sm hover:bg-muted"
+                            >
+                              <span>{role}</span>
+
+                              {field.value === role && (
+                                <Check className="h-4 w-4" />
+                              )}
+                            </button>
+                          ))}
+
+                        {roles.filter((role) =>
+                          role
+
+                            .toLowerCase()
+
+                            .includes(field.value.toLowerCase()),
+                        ).length === 0 &&
+                          field.value && (
+                            <div className="px-3 py-2 text-sm text-muted-foreground">
+                              Use custom role:
+                              <span className="font-medium">{field.value}</span>
+                            </div>
+                          )}
+                      </div>
+                    )}
+                  </div>
 
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />
