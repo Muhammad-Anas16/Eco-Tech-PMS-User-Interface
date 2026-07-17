@@ -1,7 +1,8 @@
+import Eco_Tech_Logo from "../assets/eco-tech-logo.png";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 
-import { ArrowLeft, Bell, ChevronRight, Home, Search } from "lucide-react";
+import { ArrowLeft, Bell, ChevronRight, Home } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import UserDropdown from "@/components/UserDropdown";
@@ -65,13 +66,19 @@ const Header = () => {
           )}
 
           <Link to="/" className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-600 font-bold text-white shadow">
+            {/* <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-600 font-bold text-white shadow">
               PMS
-            </div>
+            </div> */}
+
+            <img
+              src={Eco_Tech_Logo}
+              alt="Logo"
+              className="flex h-11 w-11 items-center justify-center rounded-xl"
+            />
 
             <div>
               <h1 className="text-lg font-bold text-slate-800">
-                Plant Maintenance System
+                Eco Technologies
               </h1>
 
               <p className="text-sm text-slate-500">Maintenance Management</p>
@@ -82,10 +89,6 @@ const Header = () => {
         {/* Right */}
 
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon">
-            <Search size={18} />
-          </Button>
-
           <Button variant="ghost" size="icon">
             <Bell size={18} />
           </Button>
