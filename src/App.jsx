@@ -15,6 +15,7 @@ import FaultPage from "./pages/FaultPage";
 import AssetPage from "./pages/AssetPage";
 import DashboardPage from "./pages/DashboardPage";
 import { Suspense } from "react";
+import GeneralPage from "./pages/GeneralPage";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
           <Route path="/fault" element={<FaultPage />} />
           <Route path="/asset" element={<AssetPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/general" element={<GeneralPage />} />
           {/* <Route path="/inventory" element={<InventoryPage />} /> */}
           {/* <Route path="/users" element={<UsersPage />} /> */}
         </Route>
