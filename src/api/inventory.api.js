@@ -18,14 +18,26 @@ export const getInventory = async () => {
   return response.data;
 };
 
+// // Update Inventory
+// export const updateInventory = async (inventoryData) => {
+//   const response = await api.put("/inventory", inventoryData);
+//   return response.data;
+// };
+
+// // Delete Inventory
+// export const deleteInventory = async () => {
+//   const response = await api.delete("/inventory");
+//   return response.data;
+// };
+
 // Update Inventory
-export const updateInventory = async (inventoryData) => {
-  const response = await api.put("/inventory", inventoryData);
+export const updateInventory = async (id, inventoryData) => {
+  const response = await api.put(`/inventory/${id}`, inventoryData);
   return response.data;
 };
 
 // Delete Inventory
-export const deleteInventory = async () => {
-  const response = await api.delete("/inventory");
+export const deleteInventory = async (id) => {
+  const response = await api.delete(`/inventory/${id}`);
   return response.data;
 };
