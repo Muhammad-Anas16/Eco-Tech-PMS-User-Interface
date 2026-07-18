@@ -1,78 +1,78 @@
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {
-  authoritySchema,
-  authorityDefaultValues,
-} from "@/schema/authoritySchema";
+import { operatorSchema, operatorDefaultValues } from "@/schema/operatorSchema";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 
-const AuthorityForm = ({ defaultValues, onSubmit, isSubmitting }) => {
+const OperatorForm = ({ defaultValues, onSubmit, isSubmitting }) => {
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(authoritySchema),
+    resolver: zodResolver(operatorSchema),
     defaultValues: defaultValues
       ? {
           ...defaultValues,
           isActive: Boolean(defaultValues.isActive),
         }
-      : authorityDefaultValues,
+      : operatorDefaultValues,
   });
 
   return (
     <form
-      id="authority-form"
+      id="operator-form"
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-5"
     >
-      {/* Authority Name */}
+      {/* Operator Code */}
       <div className="space-y-2">
-        <label className="text-sm font-medium">Authority Name</label>
+        <label className="text-sm font-medium">Operator Code</label>
 
-        <Input
-          placeholder="e.g. Maintenance Manager"
-          {...register("authorityName")}
-        />
+        <Input placeholder="e.g. OP-001" {...register("operatorCode")} />
 
-        {errors.authorityName && (
+        {errors.operatorCode && (
           <p className="text-sm text-destructive">
-            {errors.authorityName.message}
+            {errors.operatorCode.message}
           </p>
         )}
       </div>
 
-      {/* Description */}
+      {/* Operator Name */}
       <div className="space-y-2">
-        <label className="text-sm font-medium">Description</label>
+        <label className="text-sm font-medium">Operator Name</label>
 
-        <Textarea
-          placeholder="Optional notes about this authority"
-          rows={4}
-          {...register("description")}
-        />
+        <Input placeholder="e.g. Ali Raza" {...register("operatorName")} />
 
-        {errors.description && (
+        {errors.operatorName && (
           <p className="text-sm text-destructive">
-            {errors.description.message}
+            {errors.operatorName.message}
           </p>
         )}
       </div>
 
-      {/* Active Switch */}
+      {/* Plant Name */}
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Plant Name</label>
+
+        <Input placeholder="e.g. Production Unit" {...register("plantName")} />
+
+        {errors.plantName && (
+          <p className="text-sm text-destructive">{errors.plantName.message}</p>
+        )}
+      </div>
+
+      {/* Active */}
       <div className="flex items-center justify-between rounded-xl border p-4">
         <div>
           <h4 className="font-medium">Active</h4>
 
           <p className="text-sm text-muted-foreground">
-            Inactive authorities won't appear in dropdowns.
+            Inactive operators won't appear in dropdowns.
           </p>
         </div>
 
@@ -86,10 +86,10 @@ const AuthorityForm = ({ defaultValues, onSubmit, isSubmitting }) => {
       </div>
 
       <Button type="submit" className="w-full" disabled={isSubmitting}>
-        {isSubmitting ? "Saving..." : "Save Authority"}
+        {isSubmitting ? "Saving..." : "Save Operator"}
       </Button>
     </form>
   );
 };
 
-export default AuthorityForm;
+export default OperatorForm;
