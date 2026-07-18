@@ -1,24 +1,30 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
-import { Form } from "@/components/ui/form";
+
 import { Button } from "@/components/ui/button";
 
 const CrudFormDialog = ({
   open,
   onOpenChange,
+
   title = "Create Record",
   description = "Fill the form below.",
+
   defaultValues = {},
+
   loading = false,
+
   onSubmit,
+
   children,
 }) => {
   const form = useForm({
@@ -40,11 +46,20 @@ const CrudFormDialog = ({
 
   const handleClose = () => {
     form.reset(defaultValues);
-    onOpenChange(false);
+    onOpenChange?.(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
+    <Dialog
+      open={open}
+      onOpenChange={(value) => {
+        if (!value) {
+          handleClose();
+        } else {
+          onOpenChange?.(true);
+        }
+      }}
+    >
       <DialogContent className="sm:max-w-2xl rounded-2xl">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
@@ -52,38 +67,37 @@ const CrudFormDialog = ({
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
 
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-5"
-          >
-            {/*
-              Dynamic Fields
-              Next Step:
-              <Input />
-              <Select />
-              <Textarea />
-              etc...
-            */}
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+          {/*
+            Dynamic Fields
+            Example:
 
-            {children}
+            <Input />
 
-            <DialogFooter className="pt-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleClose}
-                disabled={loading}
-              >
-                Cancel
-              </Button>
+            <Textarea />
 
-              <Button type="submit" disabled={loading}>
-                {loading ? "Saving..." : "Save"}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+            <Select />
+
+            etc...
+          */}
+
+          {typeof children === "function" ? children(form) : children}
+
+          <DialogFooter className="pt-4">
+            <Button
+              type="button"
+              variant="outline"
+              disabled={loading}
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+
+            <Button type="submit" disabled={loading}>
+              {loading ? "Saving..." : "Save"}
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

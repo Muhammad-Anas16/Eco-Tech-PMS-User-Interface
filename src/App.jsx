@@ -6,6 +6,9 @@ import LoginPage from "./pages/authentication/LoginPage";
 import RegisterPage from "./pages/authentication/RegisterPage";
 import MainLayout from "./layouts/MainLayout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import MachinePage from "./pages/MachinePage";
+import MachineLocationPage from "./pages/MachineLocationPage";
+import AuthorityPage from "./pages/AuthorityPage";
 
 function App() {
   return (
@@ -18,11 +21,11 @@ function App() {
           </ProtectedRoute>
         }
       >
+        {/* AuthorityPage */}
         <Route path="/" element={<HomePage />} />
-
-        {/* Future Protected Routes */}
-        {/* <Route path="/machines" element={<MachinesPage />} /> */}
-        {/* <Route path="/machine-locations" element={<MachineLocationsPage />} /> */}
+        <Route path="/machine" element={<MachinePage />} />
+        <Route path="/machine-location" element={<MachineLocationPage />} />
+        <Route path="/authority" element={<AuthorityPage />} />
         {/* <Route path="/operators" element={<OperatorsPage />} /> */}
         {/* <Route path="/technicians" element={<TechniciansPage />} /> */}
         {/* <Route path="/faults" element={<FaultsPage />} /> */}
