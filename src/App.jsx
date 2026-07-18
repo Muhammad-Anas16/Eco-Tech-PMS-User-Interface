@@ -11,6 +11,7 @@ import MachineLocationPage from "./pages/MachineLocationPage";
 import AuthorityPage from "./pages/AuthorityPage";
 import OperatorPage from "./pages/OperatorPage";
 import TechnicianPage from "./pages/TechnicianPage";
+import FaultPage from "./pages/FaultPage";
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
         <Route path="/authority" element={<AuthorityPage />} />
         <Route path="/operator" element={<OperatorPage />} />
         <Route path="/technician" element={<TechnicianPage />} />
-        {/* <Route path="/faults" element={<FaultsPage />} /> */}
+        <Route path="/fault" element={<FaultPage />} />
         {/* <Route path="/inventory" element={<InventoryPage />} /> */}
         {/* <Route path="/users" element={<UsersPage />} /> */}
       </Route>
