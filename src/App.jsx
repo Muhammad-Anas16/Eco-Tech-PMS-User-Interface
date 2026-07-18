@@ -14,39 +14,48 @@ import TechnicianPage from "./pages/TechnicianPage";
 import FaultPage from "./pages/FaultPage";
 import AssetPage from "./pages/AssetPage";
 import DashboardPage from "./pages/DashboardPage";
+import { Suspense } from "react";
 
 function App() {
   return (
-    <Routes>
-      {/* Protected Routes */}
-      <Route
-        element={
-          <ProtectedRoute>
-            <MainLayout />
-          </ProtectedRoute>
-        }
-      >
-        {/* AuthorityPage */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/machine" element={<MachinePage />} />
-        <Route path="/machine-location" element={<MachineLocationPage />} />
-        <Route path="/authority" element={<AuthorityPage />} />
-        <Route path="/operator" element={<OperatorPage />} />
-        <Route path="/technician" element={<TechnicianPage />} />
-        <Route path="/fault" element={<FaultPage />} />
-        <Route path="/asset" element={<AssetPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        {/* <Route path="/inventory" element={<InventoryPage />} /> */}
-        {/* <Route path="/users" element={<UsersPage />} /> */}
-      </Route>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-screen">
+          Loading...
+        </div>
+      }
+    >
+      <Routes>
+        {/* Protected Routes */}
+        <Route
+          element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          }
+        >
+          {/* AuthorityPage */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/machine" element={<MachinePage />} />
+          <Route path="/machine-location" element={<MachineLocationPage />} />
+          <Route path="/authority" element={<AuthorityPage />} />
+          <Route path="/operator" element={<OperatorPage />} />
+          <Route path="/technician" element={<TechnicianPage />} />
+          <Route path="/fault" element={<FaultPage />} />
+          <Route path="/asset" element={<AssetPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          {/* <Route path="/inventory" element={<InventoryPage />} /> */}
+          {/* <Route path="/users" element={<UsersPage />} /> */}
+        </Route>
 
-      {/* Public Routes */}
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
+        {/* Public Routes */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
-      {/* 404 */}
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+        {/* 404 */}
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Suspense>
   );
 }
 
