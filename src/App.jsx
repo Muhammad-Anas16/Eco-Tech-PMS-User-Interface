@@ -16,6 +16,17 @@ import AssetPage from "./pages/AssetPage";
 import DashboardPage from "./pages/DashboardPage";
 import { Suspense } from "react";
 import GeneralPage from "./pages/GeneralPage";
+import JobRequestPage from "./pages/JobRequestPage";
+import WorkOrdersPage from "./pages/WorkOrdersPage";
+import PMSSchedulePage from "./pages/PMSSchedulePage";
+import PMSPage from "./pages/PMSPage";
+import CalibrationPage from "./pages/CalibrationPage";
+import ToolsManagementPage from "./pages/ToolsManagementPage";
+import WorkInstructionsPage from "./pages/WorkInstructionsPage";
+import TrainingPage from "./pages/TrainingPage";
+import DocumentsPage from "./pages/DocumentsPage";
+import ReportsPage from "./pages/ReportsPage";
+import UserManagementPage from "./pages/UserManagementPage";
 
 function App() {
   return (
@@ -46,6 +57,17 @@ function App() {
           <Route path="/asset" element={<AssetPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/general" element={<GeneralPage />} />
+          <Route path="/job-request" element={<JobRequestPage />} />
+          <Route path="/jobs" element={<WorkOrdersPage />} />
+          <Route path="/pm-schedule" element={<PMSSchedulePage />} />
+          <Route path="/pm" element={<PMSPage />} />
+          <Route path="/calibration" element={<CalibrationPage />} />
+          <Route path="/tools" element={<ToolsManagementPage />} />
+          <Route path="/work-instructions" element={<WorkInstructionsPage />} />
+          <Route path="/training" element={<TrainingPage />} />
+          <Route path="/documents" element={<DocumentsPage />} />
+          <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/users" element={<UserManagementPage  />} />
           {/* <Route path="/inventory" element={<InventoryPage />} /> */}
           {/* <Route path="/users" element={<UsersPage />} /> */}
         </Route>
