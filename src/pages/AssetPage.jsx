@@ -118,9 +118,10 @@ const AssetPage = () => {
     <PageCard>
       <PageToolbar
         title="Assets"
-        description="Manage plant assets"
-        actionLabel="Add Asset"
-        onAction={handleAddNew}
+        description="Manage all plant assets"
+        addLabel="Add Asset"
+        onAdd={handleAddNew}
+        onRefresh={fetchAssets}
       />
 
       {isLoading ? (
@@ -136,7 +137,6 @@ const AssetPage = () => {
         <DataTablePage columns={columns} data={assets} searchKey="assetName" />
       )}
 
-      {/* Create/Edit Dialog */}
       <CrudFormDialog
         open={formOpen}
         onOpenChange={setFormOpen}
@@ -154,7 +154,6 @@ const AssetPage = () => {
         />
       </CrudFormDialog>
 
-      {/* Delete Confirm Dialog */}
       <DeleteConfirmDialog
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
