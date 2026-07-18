@@ -116,11 +116,22 @@ const MachineLocationPage = () => {
 
   return (
     <PageCard>
-      <PageToolbar
+      {/* <PageToolbar
         title="Machine Locations"
         description="Manage locations assigned to each machine"
         actionLabel="Add Location"
         onAction={handleAddNew}
+      /> */}
+
+      <PageToolbar
+        title="Machine Locations"
+        description="Manage all machine locations"
+        addLabel="Add Location"
+        loading={isLoading}
+        onRefresh={fetchLocations}
+        onAdd={() => {
+          handleAddNew();
+        }}
       />
 
       {isLoading ? (

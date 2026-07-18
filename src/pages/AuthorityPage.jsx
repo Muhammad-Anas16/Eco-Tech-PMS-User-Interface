@@ -118,9 +118,13 @@ const AuthorityPage = () => {
     <PageCard>
       <PageToolbar
         title="Authorities"
-        description="Manage roles/departments used across the system"
-        actionLabel="Add Authority"
-        onAction={handleAddNew}
+        description="Manage all authorities"
+        addLabel="Add Authority"
+        loading={isLoading}
+        onRefresh={fetchAuthorities}
+        onAdd={() => {
+          handleAddNew();
+        }}
       />
 
       {isLoading ? (
@@ -130,7 +134,10 @@ const AuthorityPage = () => {
           title="No authorities yet"
           description="Get started by adding your first authority."
           actionLabel="Add Authority"
-          onAction={handleAddNew}
+          onAction={() => {
+            console.log("EmptyState Add Authority");
+            handleAddNew();
+          }}
         />
       ) : (
         <DataTablePage
@@ -140,7 +147,6 @@ const AuthorityPage = () => {
         />
       )}
 
-      {/* Create/Edit Dialog */}
       <CrudFormDialog
         open={formOpen}
         onOpenChange={setFormOpen}
@@ -152,13 +158,12 @@ const AuthorityPage = () => {
         }
       >
         <AuthorityForm
-          defaultValues={selectedAuthority || undefined}
+          defaultValues={selectedAuthority ?? undefined}
           onSubmit={handleFormSubmit}
           isSubmitting={isSubmitting}
         />
       </CrudFormDialog>
 
-      {/* Delete Confirm Dialog */}
       <DeleteConfirmDialog
         open={deleteOpen}
         onOpenChange={setDeleteOpen}

@@ -1,10 +1,4 @@
-// src/api/dashboard.api.js
-
 import api from "./axios";
-
-/* ============================================================
-   DASHBOARD
-============================================================ */
 
 // Get Dashboard Data
 export const getDashboard = async () => {
