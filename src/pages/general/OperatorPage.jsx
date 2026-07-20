@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import {
-  getFaults,
-  createFault,
-  updateFault,
-  deleteFault,
-} from "@/api/fault.api";
-import { getFaultColumns } from "@/components/fault/faultColumns";
-import FaultForm from "@/components/fault/FaultForm";
+  getOperators,
+  createOperator,
+  updateOperator,
+  deleteOperator,
+} from "@/api/operator.api";
+import { getOperatorColumns } from "@/components/operator/operatorColumns";
+import OperatorForm from "@/components/operator/OperatorForm";
+
 import PageCard from "@/components/common/PageCard";
 import PageToolbar from "@/components/common/PageToolbar";
 import DataTablePage from "@/components/common/DataTablePage";
@@ -14,31 +15,31 @@ import CrudFormDialog from "@/components/common/CrudFormDialog";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
-import { showToast } from "../lib/toast";
+import { showToast } from "../../lib/toast";
 
-const FaultPage = () => {
-  const [faults, setFaults] = useState([]);
+const OperatorPage = () => {
+  const [operators, setOperators] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [formOpen, setFormOpen] = useState(false);
-  const [selectedFault, setSelectedFault] = useState(null); // null = create mode
+  const [selectedOperator, setSelectedOperator] = useState(null); // null = create mode
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [faultToDelete, setFaultToDelete] = useState(null);
+  const [operatorToDelete, setOperatorToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   // ===========================
-  // Fetch all faults
+  // Fetch all operators
   // ===========================
-  const fetchFaults = async () => {
+  const fetchOperators = async () => {
     setIsLoading(true);
     try {
-      const response = await getFaults();
-      setFaults(response?.data || []);
+      const response = await getOperators();
+      setOperators(response?.data || []);
     } catch (error) {
       showToast.error(
-        error?.response?.data?.message || "Failed to load faults.",
+        error?.response?.data?.message || "Failed to load operators.",
       );
     } finally {
       setIsLoading(false);
@@ -46,35 +47,35 @@ const FaultPage = () => {
   };
 
   useEffect(() => {
-    fetchFaults();
+    fetchOperators();
   }, []);
 
   // ===========================
   // Create / Edit handlers
   // ===========================
   const handleAddNew = () => {
-    setSelectedFault(null);
+    setSelectedOperator(null);
     setFormOpen(true);
   };
 
-  const handleEdit = (fault) => {
-    setSelectedFault(fault);
+  const handleEdit = (operator) => {
+    setSelectedOperator(operator);
     setFormOpen(true);
   };
 
   const handleFormSubmit = async (formData) => {
     setIsSubmitting(true);
     try {
-      if (selectedFault) {
-        await updateFault(selectedFault.id, formData);
-        showToast.success("Fault updated successfully.");
+      if (selectedOperator) {
+        await updateOperator(selectedOperator.id, formData);
+        showToast.success("Operator updated successfully.");
       } else {
-        await createFault(formData);
-        showToast.success("Fault created successfully.");
+        await createOperator(formData);
+        showToast.success("Operator created successfully.");
       }
 
       setFormOpen(false);
-      fetchFaults();
+      fetchOperators();
     } catch (error) {
       showToast.error(
         error?.response?.data?.message || "Something went wrong.",
@@ -87,28 +88,28 @@ const FaultPage = () => {
   // ===========================
   // Delete handlers
   // ===========================
-  const handleDeleteClick = (fault) => {
-    setFaultToDelete(fault);
+  const handleDeleteClick = (operator) => {
+    setOperatorToDelete(operator);
     setDeleteOpen(true);
   };
 
   const handleConfirmDelete = async () => {
     setIsDeleting(true);
     try {
-      await deleteFault(faultToDelete.id);
-      showToast.success("Fault deleted successfully.");
+      await deleteOperator(operatorToDelete.id);
+      showToast.success("Operator deleted successfully.");
       setDeleteOpen(false);
-      fetchFaults();
+      fetchOperators();
     } catch (error) {
       showToast.error(
-        error?.response?.data?.message || "Failed to delete fault.",
+        error?.response?.data?.message || "Failed to delete operator.",
       );
     } finally {
       setIsDeleting(false);
     }
   };
 
-  const columns = getFaultColumns({
+  const columns = getOperatorColumns({
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
   });
@@ -116,43 +117,47 @@ const FaultPage = () => {
   return (
     <PageCard>
       <PageToolbar
-        title="Faults"
-        description="Manage fault types linked to machines"
-        actionLabel="Add Fault"
+        title="Operators"
+        description="Manage machine operators"
+        actionLabel="Add Operator"
         loading={isLoading}
-        onRefresh={fetchFaults}
+        onRefesh={fetchOperators}
         onAdd={() => {
-          // console.log("Add Location Clicked");
+          console.log("Add Operator Clicked");
           handleAddNew();
         }}
       />
 
       {isLoading ? (
         <LoadingSkeleton />
-      ) : faults.length === 0 ? (
+      ) : operators.length === 0 ? (
         <EmptyState
-          title="No faults yet"
-          description="Get started by adding your first fault."
-          actionLabel="Add Fault"
+          title="No operators yet"
+          description="Get started by adding your first operator."
+          actionLabel="Add Operator"
           onAction={handleAddNew}
         />
       ) : (
-        <DataTablePage columns={columns} data={faults} searchKey="faultName" />
+        <DataTablePage
+          columns={columns}
+          data={operators}
+          searchKey="operatorName"
+        />
       )}
 
       {/* Create/Edit Dialog */}
       <CrudFormDialog
         open={formOpen}
         onOpenChange={setFormOpen}
-        title={selectedFault ? "Edit Fault" : "Add Fault"}
+        title={selectedOperator ? "Edit Operator" : "Add Operator"}
         description={
-          selectedFault
-            ? "Update fault details below."
-            : "Fill in the details to add a new fault."
+          selectedOperator
+            ? "Update operator details below."
+            : "Fill in the details to add a new operator."
         }
       >
-        <FaultForm
-          defaultValues={selectedFault || undefined}
+        <OperatorForm
+          defaultValues={selectedOperator || undefined}
           onSubmit={handleFormSubmit}
           isSubmitting={isSubmitting}
         />
@@ -162,8 +167,8 @@ const FaultPage = () => {
       <DeleteConfirmDialog
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
-        title="Delete Fault?"
-        description={`Are you sure you want to delete "${faultToDelete?.faultName}"? This action cannot be undone.`}
+        title="Delete Operator?"
+        description={`Are you sure you want to delete "${operatorToDelete?.operatorName}"? This action cannot be undone.`}
         onConfirm={handleConfirmDelete}
         isDeleting={isDeleting}
       />
@@ -171,4 +176,4 @@ const FaultPage = () => {
   );
 };
 
-export default FaultPage;
+export default OperatorPage;

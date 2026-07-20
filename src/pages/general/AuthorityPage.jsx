@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import {
-  getInventory,
-  createInventory,
-  updateInventory,
-  deleteInventory,
-} from "@/api/inventory.api";
-import { getInventoryColumns } from "@/components/inventory/inventoryColumns";
-import InventoryForm from "@/components/inventory/InventoryForm";
+  getAuthorities,
+  createAuthority,
+  updateAuthority,
+  deleteAuthority,
+} from "@/api/authority.api";
+import { getAuthorityColumns } from "@/components/authority/authorityColumns";
+import AuthorityForm from "@/components/authority/AuthorityForm";
 
 import PageCard from "@/components/common/PageCard";
 import PageToolbar from "@/components/common/PageToolbar";
@@ -15,31 +15,31 @@ import CrudFormDialog from "@/components/common/CrudFormDialog";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
-import { showToast } from "../lib/toast";
+import { showToast } from "../../lib/toast";
 
-const InventoryPage = () => {
-  const [inventory, setInventory] = useState([]);
+const AuthorityPage = () => {
+  const [authorities, setAuthorities] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [formOpen, setFormOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null); // null = create mode
+  const [selectedAuthority, setSelectedAuthority] = useState(null); // null = create mode
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null);
+  const [authorityToDelete, setAuthorityToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   // ===========================
-  // Fetch all inventory items
+  // Fetch all authorities
   // ===========================
-  const fetchInventory = async () => {
+  const fetchAuthorities = async () => {
     setIsLoading(true);
     try {
-      const response = await getInventory();
-      setInventory(response?.data || []);
+      const response = await getAuthorities();
+      setAuthorities(response?.data || []);
     } catch (error) {
       showToast.error(
-        error?.response?.data?.message || "Failed to load inventory.",
+        error?.response?.data?.message || "Failed to load authorities.",
       );
     } finally {
       setIsLoading(false);
@@ -47,35 +47,35 @@ const InventoryPage = () => {
   };
 
   useEffect(() => {
-    fetchInventory();
+    fetchAuthorities();
   }, []);
 
   // ===========================
   // Create / Edit handlers
   // ===========================
   const handleAddNew = () => {
-    setSelectedItem(null);
+    setSelectedAuthority(null);
     setFormOpen(true);
   };
 
-  const handleEdit = (item) => {
-    setSelectedItem(item);
+  const handleEdit = (authority) => {
+    setSelectedAuthority(authority);
     setFormOpen(true);
   };
 
   const handleFormSubmit = async (formData) => {
     setIsSubmitting(true);
     try {
-      if (selectedItem) {
-        await updateInventory(selectedItem.id, formData);
-        showToast.success("Inventory item updated successfully.");
+      if (selectedAuthority) {
+        await updateAuthority(selectedAuthority.id, formData);
+        showToast.success("Authority updated successfully.");
       } else {
-        await createInventory(formData);
-        showToast.success("Inventory item created successfully.");
+        await createAuthority(formData);
+        showToast.success("Authority created successfully.");
       }
 
       setFormOpen(false);
-      fetchInventory();
+      fetchAuthorities();
     } catch (error) {
       showToast.error(
         error?.response?.data?.message || "Something went wrong.",
@@ -88,28 +88,28 @@ const InventoryPage = () => {
   // ===========================
   // Delete handlers
   // ===========================
-  const handleDeleteClick = (item) => {
-    setItemToDelete(item);
+  const handleDeleteClick = (authority) => {
+    setAuthorityToDelete(authority);
     setDeleteOpen(true);
   };
 
   const handleConfirmDelete = async () => {
     setIsDeleting(true);
     try {
-      await deleteInventory(itemToDelete.id);
-      showToast.success("Inventory item deleted successfully.");
+      await deleteAuthority(authorityToDelete.id);
+      showToast.success("Authority deleted successfully.");
       setDeleteOpen(false);
-      fetchInventory();
+      fetchAuthorities();
     } catch (error) {
       showToast.error(
-        error?.response?.data?.message || "Failed to delete inventory item.",
+        error?.response?.data?.message || "Failed to delete authority.",
       );
     } finally {
       setIsDeleting(false);
     }
   };
 
-  const columns = getInventoryColumns({
+  const columns = getAuthorityColumns({
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
   });
@@ -117,11 +117,11 @@ const InventoryPage = () => {
   return (
     <PageCard>
       <PageToolbar
-        title="Inventory"
-        description="Manage spare parts and stock items"
-        actionLabel="Add Item"
+        title="Authorities"
+        description="Manage all authorities"
+        addLabel="Add Authority"
         loading={isLoading}
-        onRefresh={fetchInventory}
+        onRefresh={fetchAuthorities}
         onAdd={() => {
           handleAddNew();
         }}
@@ -129,45 +129,46 @@ const InventoryPage = () => {
 
       {isLoading ? (
         <LoadingSkeleton />
-      ) : inventory.length === 0 ? (
+      ) : authorities.length === 0 ? (
         <EmptyState
-          title="No inventory items yet"
-          description="Get started by adding your first item."
-          actionLabel="Add Item"
-          onAction={handleAddNew}
+          title="No authorities yet"
+          description="Get started by adding your first authority."
+          actionLabel="Add Authority"
+          onAction={() => {
+            console.log("EmptyState Add Authority");
+            handleAddNew();
+          }}
         />
       ) : (
         <DataTablePage
           columns={columns}
-          data={inventory}
-          searchKey="itemName"
+          data={authorities}
+          searchKey="authorityName"
         />
       )}
 
-      {/* Create/Edit Dialog */}
       <CrudFormDialog
         open={formOpen}
         onOpenChange={setFormOpen}
-        title={selectedItem ? "Edit Inventory Item" : "Add Inventory Item"}
+        title={selectedAuthority ? "Edit Authority" : "Add Authority"}
         description={
-          selectedItem
-            ? "Update item details below."
-            : "Fill in the details to add a new inventory item."
+          selectedAuthority
+            ? "Update authority details below."
+            : "Fill in the details to add a new authority."
         }
       >
-        <InventoryForm
-          defaultValues={selectedItem || undefined}
+        <AuthorityForm
+          defaultValues={selectedAuthority ?? undefined}
           onSubmit={handleFormSubmit}
           isSubmitting={isSubmitting}
         />
       </CrudFormDialog>
 
-      {/* Delete Confirm Dialog */}
       <DeleteConfirmDialog
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
-        title="Delete Inventory Item?"
-        description={`Are you sure you want to delete "${itemToDelete?.itemName}"? This action cannot be undone.`}
+        title="Delete Authority?"
+        description={`Are you sure you want to delete "${authorityToDelete?.authorityName}"? This action cannot be undone.`}
         onConfirm={handleConfirmDelete}
         isDeleting={isDeleting}
       />
@@ -175,4 +176,4 @@ const InventoryPage = () => {
   );
 };
 
-export default InventoryPage;
+export default AuthorityPage;

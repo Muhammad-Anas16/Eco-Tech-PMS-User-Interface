@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import {
-  getAuthorities,
-  createAuthority,
-  updateAuthority,
-  deleteAuthority,
-} from "@/api/authority.api";
-import { getAuthorityColumns } from "@/components/authority/authorityColumns";
-import AuthorityForm from "@/components/authority/AuthorityForm";
+  getTechnicians,
+  createTechnician,
+  updateTechnician,
+  deleteTechnician,
+} from "@/api/technician.api";
+import { getTechnicianColumns } from "@/components/technician/technicianColumns";
+import TechnicianForm from "@/components/technician/TechnicianForm";
 
 import PageCard from "@/components/common/PageCard";
 import PageToolbar from "@/components/common/PageToolbar";
@@ -15,31 +15,31 @@ import CrudFormDialog from "@/components/common/CrudFormDialog";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
-import { showToast } from "../lib/toast";
+import { showToast } from "../../lib/toast";
 
-const AuthorityPage = () => {
-  const [authorities, setAuthorities] = useState([]);
+const TechnicianPage = () => {
+  const [technicians, setTechnicians] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [formOpen, setFormOpen] = useState(false);
-  const [selectedAuthority, setSelectedAuthority] = useState(null); // null = create mode
+  const [selectedTechnician, setSelectedTechnician] = useState(null); // null = create mode
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [authorityToDelete, setAuthorityToDelete] = useState(null);
+  const [technicianToDelete, setTechnicianToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   // ===========================
-  // Fetch all authorities
+  // Fetch all technicians
   // ===========================
-  const fetchAuthorities = async () => {
+  const fetchTechnicians = async () => {
     setIsLoading(true);
     try {
-      const response = await getAuthorities();
-      setAuthorities(response?.data || []);
+      const response = await getTechnicians();
+      setTechnicians(response?.data || []);
     } catch (error) {
       showToast.error(
-        error?.response?.data?.message || "Failed to load authorities.",
+        error?.response?.data?.message || "Failed to load technicians.",
       );
     } finally {
       setIsLoading(false);
@@ -47,35 +47,35 @@ const AuthorityPage = () => {
   };
 
   useEffect(() => {
-    fetchAuthorities();
+    fetchTechnicians();
   }, []);
 
   // ===========================
   // Create / Edit handlers
   // ===========================
   const handleAddNew = () => {
-    setSelectedAuthority(null);
+    setSelectedTechnician(null);
     setFormOpen(true);
   };
 
-  const handleEdit = (authority) => {
-    setSelectedAuthority(authority);
+  const handleEdit = (technician) => {
+    setSelectedTechnician(technician);
     setFormOpen(true);
   };
 
   const handleFormSubmit = async (formData) => {
     setIsSubmitting(true);
     try {
-      if (selectedAuthority) {
-        await updateAuthority(selectedAuthority.id, formData);
-        showToast.success("Authority updated successfully.");
+      if (selectedTechnician) {
+        await updateTechnician(selectedTechnician.id, formData);
+        showToast.success("Technician updated successfully.");
       } else {
-        await createAuthority(formData);
-        showToast.success("Authority created successfully.");
+        await createTechnician(formData);
+        showToast.success("Technician created successfully.");
       }
 
       setFormOpen(false);
-      fetchAuthorities();
+      fetchTechnicians();
     } catch (error) {
       showToast.error(
         error?.response?.data?.message || "Something went wrong.",
@@ -88,28 +88,28 @@ const AuthorityPage = () => {
   // ===========================
   // Delete handlers
   // ===========================
-  const handleDeleteClick = (authority) => {
-    setAuthorityToDelete(authority);
+  const handleDeleteClick = (technician) => {
+    setTechnicianToDelete(technician);
     setDeleteOpen(true);
   };
 
   const handleConfirmDelete = async () => {
     setIsDeleting(true);
     try {
-      await deleteAuthority(authorityToDelete.id);
-      showToast.success("Authority deleted successfully.");
+      await deleteTechnician(technicianToDelete.id);
+      showToast.success("Technician deleted successfully.");
       setDeleteOpen(false);
-      fetchAuthorities();
+      fetchTechnicians();
     } catch (error) {
       showToast.error(
-        error?.response?.data?.message || "Failed to delete authority.",
+        error?.response?.data?.message || "Failed to delete technician.",
       );
     } finally {
       setIsDeleting(false);
     }
   };
 
-  const columns = getAuthorityColumns({
+  const columns = getTechnicianColumns({
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
   });
@@ -117,58 +117,59 @@ const AuthorityPage = () => {
   return (
     <PageCard>
       <PageToolbar
-        title="Authorities"
-        description="Manage all authorities"
-        addLabel="Add Authority"
+        title="Technicians"
+        description="Manage internal and external technicians"
+        actionLabel="Add Technician"
         loading={isLoading}
-        onRefresh={fetchAuthorities}
+        // onAction={handleAddNew}
+        onRefresh={fetchTechnicians}
         onAdd={() => {
+          console.log("Add Technician Clicked");
           handleAddNew();
         }}
       />
 
       {isLoading ? (
         <LoadingSkeleton />
-      ) : authorities.length === 0 ? (
+      ) : technicians.length === 0 ? (
         <EmptyState
-          title="No authorities yet"
-          description="Get started by adding your first authority."
-          actionLabel="Add Authority"
-          onAction={() => {
-            console.log("EmptyState Add Authority");
-            handleAddNew();
-          }}
+          title="No technicians yet"
+          description="Get started by adding your first technician."
+          actionLabel="Add Technician"
+          onAction={handleAddNew}
         />
       ) : (
         <DataTablePage
           columns={columns}
-          data={authorities}
-          searchKey="authorityName"
+          data={technicians}
+          searchKey="techName"
         />
       )}
 
+      {/* Create/Edit Dialog */}
       <CrudFormDialog
         open={formOpen}
         onOpenChange={setFormOpen}
-        title={selectedAuthority ? "Edit Authority" : "Add Authority"}
+        title={selectedTechnician ? "Edit Technician" : "Add Technician"}
         description={
-          selectedAuthority
-            ? "Update authority details below."
-            : "Fill in the details to add a new authority."
+          selectedTechnician
+            ? "Update technician details below."
+            : "Fill in the details to add a new technician."
         }
       >
-        <AuthorityForm
-          defaultValues={selectedAuthority ?? undefined}
+        <TechnicianForm
+          defaultValues={selectedTechnician || undefined}
           onSubmit={handleFormSubmit}
           isSubmitting={isSubmitting}
         />
       </CrudFormDialog>
 
+      {/* Delete Confirm Dialog */}
       <DeleteConfirmDialog
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
-        title="Delete Authority?"
-        description={`Are you sure you want to delete "${authorityToDelete?.authorityName}"? This action cannot be undone.`}
+        title="Delete Technician?"
+        description={`Are you sure you want to delete "${technicianToDelete?.techName}"? This action cannot be undone.`}
         onConfirm={handleConfirmDelete}
         isDeleting={isDeleting}
       />
@@ -176,4 +177,4 @@ const AuthorityPage = () => {
   );
 };
 
-export default AuthorityPage;
+export default TechnicianPage;

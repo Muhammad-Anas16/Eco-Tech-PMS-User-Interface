@@ -13,8 +13,8 @@ import CrudFormDialog from "@/components/common/CrudFormDialog";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
-import { showToast } from "../lib/toast";
-import PageToolbar from "../components/common/PageToolbar";
+import { showToast } from "../../lib/toast";
+import PageToolbar from "@/components/common/PageToolbar";
 
 const MachinePage = () => {
   const [machines, setMachines] = useState([]);

@@ -15,7 +15,7 @@ import CrudFormDialog from "@/components/common/CrudFormDialog";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
-import { showToast } from "../lib/toast";
+import { showToast } from "../../lib/toast";
 
 const AssetPage = () => {
   const [assets, setAssets] = useState([]);

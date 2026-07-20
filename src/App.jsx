@@ -1,18 +1,23 @@
 import "./App.css";
 import { Route, Routes } from "react-router";
+
 import HomePage from "./pages/HomePage";
+// general
+import MachinePage from "./pages/general/MachinePage";
+import MachineLocationPage from "./pages/general/MachineLocationPage";
+import AssetPage from "./pages/general/AssetPage";
+import InventoryPage from "./pages/general/InventoryPage";
+import FaultPage from "./pages/general/FaultPage";
+import OperatorPage from "./pages/general/OperatorPage";
+import TechnicianPage from "./pages/general/TechnicianPage";
+import AuthorityPage from "./pages/general/AuthorityPage";
+
+//
 import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/authentication/LoginPage";
 import RegisterPage from "./pages/authentication/RegisterPage";
 import MainLayout from "./layouts/MainLayout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
-import MachinePage from "./pages/MachinePage";
-import MachineLocationPage from "./pages/MachineLocationPage";
-import AuthorityPage from "./pages/AuthorityPage";
-import OperatorPage from "./pages/OperatorPage";
-import TechnicianPage from "./pages/TechnicianPage";
-import FaultPage from "./pages/FaultPage";
-import AssetPage from "./pages/AssetPage";
 import DashboardPage from "./pages/DashboardPage";
 import { Suspense } from "react";
 import GeneralPage from "./pages/GeneralPage";
@@ -27,12 +32,11 @@ import TrainingPage from "./pages/TrainingPage";
 import DocumentsPage from "./pages/DocumentsPage";
 import ReportsPage from "./pages/ReportsPage";
 import UserManagementPage from "./pages/UserManagementPage";
-import InventoryPage from "./pages/InventoryPage";
 import JobRequestListPage from "./pages/jobRequest/JobRequestListPage";
 import JobRequestCreatePage from "./pages/jobRequest/JobRequestCreatePage";
 // import JobRequestPendingPage from "./pages/jobRequest/JobRequestPendingPage";
 // import JobRequestApprovedPage from "./pages/jobRequest/JobRequestApprovedPage";
-import JobRequestRejectedPage from "./pages/jobRequest/JobRequestRejectedPage";
+// import JobRequestRejectedPage from "./pages/jobRequest/JobRequestRejectedPage";
 // import JobRequestHistoryPage from "./pages/jobRequest/JobRequestHistoryPage";
 import JobRequestSearchPage from "./pages/jobRequest/JobRequestSearchPage";
 import JobRequestReportsPage from "./pages/jobRequest/JobRequestReportsPage";
@@ -55,17 +59,23 @@ function App() {
             </ProtectedRoute>
           }
         >
-          {/* AuthorityPage */}
+          {/* Pages */}
           <Route path="/" element={<HomePage />} />
-          <Route path="/machine" element={<MachinePage />} />
-          <Route path="/machine-location" element={<MachineLocationPage />} />
-          <Route path="/authority" element={<AuthorityPage />} />
-          <Route path="/operator" element={<OperatorPage />} />
-          <Route path="/technician" element={<TechnicianPage />} />
-          <Route path="/fault" element={<FaultPage />} />
-          <Route path="/asset" element={<AssetPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/general" element={<GeneralPage />} />
+          {/* General Page */}
+          <Route path="/general/machine" element={<MachinePage />} />
+          <Route
+            path="/general/machine-location"
+            element={<MachineLocationPage />}
+          />
+          <Route path="/general/authority" element={<AuthorityPage />} />
+          <Route path="/general/operator" element={<OperatorPage />} />
+          <Route path="/general/technician" element={<TechnicianPage />} />
+          <Route path="/general/fault" element={<FaultPage />} />
+          <Route path="/general/asset" element={<AssetPage />} />
+          <Route path="/general/inventory" element={<InventoryPage />} />
+          {/*  */}
           <Route path="/job-request" element={<JobRequestPage />} />
           <Route path="/jobs" element={<WorkOrdersPage />} />
           <Route path="/pm-schedule" element={<PMSSchedulePage />} />
@@ -77,12 +87,11 @@ function App() {
           <Route path="/documents" element={<DocumentsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/users" element={<UserManagementPage />} />
-          <Route path="/inventory" element={<InventoryPage />} />
           <Route
             path="/job-request"
             element={
               // <ProtectedRoute>
-                <JobRequestPage />
+              <JobRequestPage />
               // </ProtectedRoute>
             }
           />
@@ -90,55 +99,43 @@ function App() {
             path="/job-request/list"
             element={
               // <ProtectedRoute>
-                <JobRequestListPage />
+              <JobRequestListPage />
               // </ProtectedRoute>
             }
           />
           <Route
             path="/job-request/create"
-            element={
-              // <ProtectedRoute>
-                <JobRequestCreatePage />
-              // </ProtectedRoute>
-            }
+            element={<JobRequestCreatePage />}
           />
           {/* <Route
             path="/job-request/pending"
             element={
-              <ProtectedRoute>
                 <JobRequestPendingPage />
-              </ProtectedRoute>
             }
           /> */}
           {/* <Route
             path="/job-request/approved"
             element={
-              <ProtectedRoute>
                 <JobRequestApprovedPage />
-              </ProtectedRoute>
             }
           /> */}
           {/* <Route
             path="/job-request/rejected"
             element={
-              // <ProtectedRoute>
                 <JobRequestRejectedPage />
-              // </ProtectedRoute>
             }
           /> */}
           {/* <Route
             path="/job-request/history"
             element={
-              <ProtectedRoute>
                 <JobRequestHistoryPage />
-              </ProtectedRoute>
             }
           /> */}
           <Route
             path="/job-request/search"
             element={
               // <ProtectedRoute>
-                <JobRequestSearchPage />
+              <JobRequestSearchPage />
               // </ProtectedRoute>
             }
           />
@@ -146,7 +143,7 @@ function App() {
             path="/job-request/reports"
             element={
               // <ProtectedRoute>
-                <JobRequestReportsPage />
+              <JobRequestReportsPage />
               // </ProtectedRoute>
             }
           />

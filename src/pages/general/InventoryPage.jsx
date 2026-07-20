@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import {
-  getOperators,
-  createOperator,
-  updateOperator,
-  deleteOperator,
-} from "@/api/operator.api";
-import { getOperatorColumns } from "@/components/operator/operatorColumns";
-import OperatorForm from "@/components/operator/OperatorForm";
+  getInventory,
+  createInventory,
+  updateInventory,
+  deleteInventory,
+} from "@/api/inventory.api";
+import { getInventoryColumns } from "@/components/inventory/inventoryColumns";
+import InventoryForm from "@/components/inventory/InventoryForm";
 
 import PageCard from "@/components/common/PageCard";
 import PageToolbar from "@/components/common/PageToolbar";
@@ -15,31 +15,31 @@ import CrudFormDialog from "@/components/common/CrudFormDialog";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
-import { showToast } from "../lib/toast";
+import { showToast } from "../../lib/toast";
 
-const OperatorPage = () => {
-  const [operators, setOperators] = useState([]);
+const InventoryPage = () => {
+  const [inventory, setInventory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [formOpen, setFormOpen] = useState(false);
-  const [selectedOperator, setSelectedOperator] = useState(null); // null = create mode
+  const [selectedItem, setSelectedItem] = useState(null); // null = create mode
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [operatorToDelete, setOperatorToDelete] = useState(null);
+  const [itemToDelete, setItemToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   // ===========================
-  // Fetch all operators
+  // Fetch all inventory items
   // ===========================
-  const fetchOperators = async () => {
+  const fetchInventory = async () => {
     setIsLoading(true);
     try {
-      const response = await getOperators();
-      setOperators(response?.data || []);
+      const response = await getInventory();
+      setInventory(response?.data || []);
     } catch (error) {
       showToast.error(
-        error?.response?.data?.message || "Failed to load operators.",
+        error?.response?.data?.message || "Failed to load inventory.",
       );
     } finally {
       setIsLoading(false);
@@ -47,35 +47,35 @@ const OperatorPage = () => {
   };
 
   useEffect(() => {
-    fetchOperators();
+    fetchInventory();
   }, []);
 
   // ===========================
   // Create / Edit handlers
   // ===========================
   const handleAddNew = () => {
-    setSelectedOperator(null);
+    setSelectedItem(null);
     setFormOpen(true);
   };
 
-  const handleEdit = (operator) => {
-    setSelectedOperator(operator);
+  const handleEdit = (item) => {
+    setSelectedItem(item);
     setFormOpen(true);
   };
 
   const handleFormSubmit = async (formData) => {
     setIsSubmitting(true);
     try {
-      if (selectedOperator) {
-        await updateOperator(selectedOperator.id, formData);
-        showToast.success("Operator updated successfully.");
+      if (selectedItem) {
+        await updateInventory(selectedItem.id, formData);
+        showToast.success("Inventory item updated successfully.");
       } else {
-        await createOperator(formData);
-        showToast.success("Operator created successfully.");
+        await createInventory(formData);
+        showToast.success("Inventory item created successfully.");
       }
 
       setFormOpen(false);
-      fetchOperators();
+      fetchInventory();
     } catch (error) {
       showToast.error(
         error?.response?.data?.message || "Something went wrong.",
@@ -88,28 +88,28 @@ const OperatorPage = () => {
   // ===========================
   // Delete handlers
   // ===========================
-  const handleDeleteClick = (operator) => {
-    setOperatorToDelete(operator);
+  const handleDeleteClick = (item) => {
+    setItemToDelete(item);
     setDeleteOpen(true);
   };
 
   const handleConfirmDelete = async () => {
     setIsDeleting(true);
     try {
-      await deleteOperator(operatorToDelete.id);
-      showToast.success("Operator deleted successfully.");
+      await deleteInventory(itemToDelete.id);
+      showToast.success("Inventory item deleted successfully.");
       setDeleteOpen(false);
-      fetchOperators();
+      fetchInventory();
     } catch (error) {
       showToast.error(
-        error?.response?.data?.message || "Failed to delete operator.",
+        error?.response?.data?.message || "Failed to delete inventory item.",
       );
     } finally {
       setIsDeleting(false);
     }
   };
 
-  const columns = getOperatorColumns({
+  const columns = getInventoryColumns({
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
   });
@@ -117,31 +117,30 @@ const OperatorPage = () => {
   return (
     <PageCard>
       <PageToolbar
-        title="Operators"
-        description="Manage machine operators"
-        actionLabel="Add Operator"
+        title="Inventory"
+        description="Manage spare parts and stock items"
+        actionLabel="Add Item"
         loading={isLoading}
-        onRefesh={fetchOperators}
+        onRefresh={fetchInventory}
         onAdd={() => {
-          console.log("Add Operator Clicked");
           handleAddNew();
         }}
       />
 
       {isLoading ? (
         <LoadingSkeleton />
-      ) : operators.length === 0 ? (
+      ) : inventory.length === 0 ? (
         <EmptyState
-          title="No operators yet"
-          description="Get started by adding your first operator."
-          actionLabel="Add Operator"
+          title="No inventory items yet"
+          description="Get started by adding your first item."
+          actionLabel="Add Item"
           onAction={handleAddNew}
         />
       ) : (
         <DataTablePage
           columns={columns}
-          data={operators}
-          searchKey="operatorName"
+          data={inventory}
+          searchKey="itemName"
         />
       )}
 
@@ -149,15 +148,15 @@ const OperatorPage = () => {
       <CrudFormDialog
         open={formOpen}
         onOpenChange={setFormOpen}
-        title={selectedOperator ? "Edit Operator" : "Add Operator"}
+        title={selectedItem ? "Edit Inventory Item" : "Add Inventory Item"}
         description={
-          selectedOperator
-            ? "Update operator details below."
-            : "Fill in the details to add a new operator."
+          selectedItem
+            ? "Update item details below."
+            : "Fill in the details to add a new inventory item."
         }
       >
-        <OperatorForm
-          defaultValues={selectedOperator || undefined}
+        <InventoryForm
+          defaultValues={selectedItem || undefined}
           onSubmit={handleFormSubmit}
           isSubmitting={isSubmitting}
         />
@@ -167,8 +166,8 @@ const OperatorPage = () => {
       <DeleteConfirmDialog
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
-        title="Delete Operator?"
-        description={`Are you sure you want to delete "${operatorToDelete?.operatorName}"? This action cannot be undone.`}
+        title="Delete Inventory Item?"
+        description={`Are you sure you want to delete "${itemToDelete?.itemName}"? This action cannot be undone.`}
         onConfirm={handleConfirmDelete}
         isDeleting={isDeleting}
       />
@@ -176,4 +175,4 @@ const OperatorPage = () => {
   );
 };
 
-export default OperatorPage;
+export default InventoryPage;

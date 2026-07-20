@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import {
-  getTechnicians,
-  createTechnician,
-  updateTechnician,
-  deleteTechnician,
-} from "@/api/technician.api";
-import { getTechnicianColumns } from "@/components/technician/technicianColumns";
-import TechnicianForm from "@/components/technician/TechnicianForm";
-
+  getFaults,
+  createFault,
+  updateFault,
+  deleteFault,
+} from "@/api/fault.api";
+import { getFaultColumns } from "@/components/fault/faultColumns";
+import FaultForm from "@/components/fault/FaultForm";
 import PageCard from "@/components/common/PageCard";
 import PageToolbar from "@/components/common/PageToolbar";
 import DataTablePage from "@/components/common/DataTablePage";
@@ -15,31 +14,31 @@ import CrudFormDialog from "@/components/common/CrudFormDialog";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
-import { showToast } from "../lib/toast";
+import { showToast } from "../../lib/toast";
 
-const TechnicianPage = () => {
-  const [technicians, setTechnicians] = useState([]);
+const FaultPage = () => {
+  const [faults, setFaults] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [formOpen, setFormOpen] = useState(false);
-  const [selectedTechnician, setSelectedTechnician] = useState(null); // null = create mode
+  const [selectedFault, setSelectedFault] = useState(null); // null = create mode
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [technicianToDelete, setTechnicianToDelete] = useState(null);
+  const [faultToDelete, setFaultToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   // ===========================
-  // Fetch all technicians
+  // Fetch all faults
   // ===========================
-  const fetchTechnicians = async () => {
+  const fetchFaults = async () => {
     setIsLoading(true);
     try {
-      const response = await getTechnicians();
-      setTechnicians(response?.data || []);
+      const response = await getFaults();
+      setFaults(response?.data || []);
     } catch (error) {
       showToast.error(
-        error?.response?.data?.message || "Failed to load technicians.",
+        error?.response?.data?.message || "Failed to load faults.",
       );
     } finally {
       setIsLoading(false);
@@ -47,35 +46,35 @@ const TechnicianPage = () => {
   };
 
   useEffect(() => {
-    fetchTechnicians();
+    fetchFaults();
   }, []);
 
   // ===========================
   // Create / Edit handlers
   // ===========================
   const handleAddNew = () => {
-    setSelectedTechnician(null);
+    setSelectedFault(null);
     setFormOpen(true);
   };
 
-  const handleEdit = (technician) => {
-    setSelectedTechnician(technician);
+  const handleEdit = (fault) => {
+    setSelectedFault(fault);
     setFormOpen(true);
   };
 
   const handleFormSubmit = async (formData) => {
     setIsSubmitting(true);
     try {
-      if (selectedTechnician) {
-        await updateTechnician(selectedTechnician.id, formData);
-        showToast.success("Technician updated successfully.");
+      if (selectedFault) {
+        await updateFault(selectedFault.id, formData);
+        showToast.success("Fault updated successfully.");
       } else {
-        await createTechnician(formData);
-        showToast.success("Technician created successfully.");
+        await createFault(formData);
+        showToast.success("Fault created successfully.");
       }
 
       setFormOpen(false);
-      fetchTechnicians();
+      fetchFaults();
     } catch (error) {
       showToast.error(
         error?.response?.data?.message || "Something went wrong.",
@@ -88,28 +87,28 @@ const TechnicianPage = () => {
   // ===========================
   // Delete handlers
   // ===========================
-  const handleDeleteClick = (technician) => {
-    setTechnicianToDelete(technician);
+  const handleDeleteClick = (fault) => {
+    setFaultToDelete(fault);
     setDeleteOpen(true);
   };
 
   const handleConfirmDelete = async () => {
     setIsDeleting(true);
     try {
-      await deleteTechnician(technicianToDelete.id);
-      showToast.success("Technician deleted successfully.");
+      await deleteFault(faultToDelete.id);
+      showToast.success("Fault deleted successfully.");
       setDeleteOpen(false);
-      fetchTechnicians();
+      fetchFaults();
     } catch (error) {
       showToast.error(
-        error?.response?.data?.message || "Failed to delete technician.",
+        error?.response?.data?.message || "Failed to delete fault.",
       );
     } finally {
       setIsDeleting(false);
     }
   };
 
-  const columns = getTechnicianColumns({
+  const columns = getFaultColumns({
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
   });
@@ -117,48 +116,43 @@ const TechnicianPage = () => {
   return (
     <PageCard>
       <PageToolbar
-        title="Technicians"
-        description="Manage internal and external technicians"
-        actionLabel="Add Technician"
+        title="Faults"
+        description="Manage fault types linked to machines"
+        actionLabel="Add Fault"
         loading={isLoading}
-        // onAction={handleAddNew}
-        onRefresh={fetchTechnicians}
+        onRefresh={fetchFaults}
         onAdd={() => {
-          console.log("Add Technician Clicked");
+          // console.log("Add Location Clicked");
           handleAddNew();
         }}
       />
 
       {isLoading ? (
         <LoadingSkeleton />
-      ) : technicians.length === 0 ? (
+      ) : faults.length === 0 ? (
         <EmptyState
-          title="No technicians yet"
-          description="Get started by adding your first technician."
-          actionLabel="Add Technician"
+          title="No faults yet"
+          description="Get started by adding your first fault."
+          actionLabel="Add Fault"
           onAction={handleAddNew}
         />
       ) : (
-        <DataTablePage
-          columns={columns}
-          data={technicians}
-          searchKey="techName"
-        />
+        <DataTablePage columns={columns} data={faults} searchKey="faultName" />
       )}
 
       {/* Create/Edit Dialog */}
       <CrudFormDialog
         open={formOpen}
         onOpenChange={setFormOpen}
-        title={selectedTechnician ? "Edit Technician" : "Add Technician"}
+        title={selectedFault ? "Edit Fault" : "Add Fault"}
         description={
-          selectedTechnician
-            ? "Update technician details below."
-            : "Fill in the details to add a new technician."
+          selectedFault
+            ? "Update fault details below."
+            : "Fill in the details to add a new fault."
         }
       >
-        <TechnicianForm
-          defaultValues={selectedTechnician || undefined}
+        <FaultForm
+          defaultValues={selectedFault || undefined}
           onSubmit={handleFormSubmit}
           isSubmitting={isSubmitting}
         />
@@ -168,8 +162,8 @@ const TechnicianPage = () => {
       <DeleteConfirmDialog
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
-        title="Delete Technician?"
-        description={`Are you sure you want to delete "${technicianToDelete?.techName}"? This action cannot be undone.`}
+        title="Delete Fault?"
+        description={`Are you sure you want to delete "${faultToDelete?.faultName}"? This action cannot be undone.`}
         onConfirm={handleConfirmDelete}
         isDeleting={isDeleting}
       />
@@ -177,4 +171,4 @@ const TechnicianPage = () => {
   );
 };
 
-export default TechnicianPage;
+export default FaultPage;
