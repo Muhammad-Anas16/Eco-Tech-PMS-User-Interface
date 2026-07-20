@@ -27,7 +27,7 @@ const DeleteConfirmDialog = ({
             <Trash2 className="h-7 w-7 text-red-600" />
           </div>
 
-          <AlertDialogTitle className="text-center text-xl font-semibold">
+          <AlertDialogTitle className="w-full text-center text-xl font-semibold flex items-center justify-center">
             {title}
           </AlertDialogTitle>
 

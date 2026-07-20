@@ -1,13 +1,13 @@
-import { Search, Plus, RefreshCw } from "lucide-react";
+import { Plus, RefreshCw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 
 const PageToolbar = ({
   title,
   description = "",
-  search = "",
-  onSearch,
+  // search = "",
+  // onSearch,
   onRefresh,
   onAdd,
   addLabel = "Add New",
@@ -28,7 +28,7 @@ const PageToolbar = ({
       {/* Right Side */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         {/* Search */}
-        <div className="relative w-full sm:w-72">
+        {/* <div className="relative w-full sm:w-72">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 
           <Input
@@ -37,7 +37,7 @@ const PageToolbar = ({
             onChange={(e) => onSearch?.(e.target.value)}
             className="pl-9"
           />
-        </div>
+        </div> */}
 
         {/* Custom Actions */}
         {actions}
