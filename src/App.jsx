@@ -34,10 +34,10 @@ import ReportsPage from "./pages/ReportsPage";
 import UserManagementPage from "./pages/UserManagementPage";
 import JobRequestListPage from "./pages/jobRequest/JobRequestListPage";
 import JobRequestCreatePage from "./pages/jobRequest/JobRequestCreatePage";
-// import JobRequestPendingPage from "./pages/jobRequest/JobRequestPendingPage";
-// import JobRequestApprovedPage from "./pages/jobRequest/JobRequestApprovedPage";
-// import JobRequestRejectedPage from "./pages/jobRequest/JobRequestRejectedPage";
-// import JobRequestHistoryPage from "./pages/jobRequest/JobRequestHistoryPage";
+import JobRequestPendingPage from "./pages/jobRequest/JobRequestPendingPage";
+import JobRequestApprovedPage from "./pages/jobRequest/JobRequestApprovedPage";
+import JobRequestRejectedPage from "./pages/jobRequest/JobRequestRejectedPage";
+import JobRequestHistoryPage from "./pages/jobRequest/JobRequestHistoryPage";
 import JobRequestSearchPage from "./pages/jobRequest/JobRequestSearchPage";
 import JobRequestReportsPage from "./pages/jobRequest/JobRequestReportsPage";
 
@@ -63,6 +63,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/general" element={<GeneralPage />} />
+          <Route path="/job-request" element={<JobRequestPage />} />
           {/* General Page */}
           <Route path="/general/machine" element={<MachinePage />} />
           <Route
@@ -75,8 +76,37 @@ function App() {
           <Route path="/general/fault" element={<FaultPage />} />
           <Route path="/general/asset" element={<AssetPage />} />
           <Route path="/general/inventory" element={<InventoryPage />} />
+          {/* Job Reqest */}
+          <Route path="/job-request/list" element={<JobRequestListPage />} />
+          <Route
+            path="/job-request/create"
+            element={<JobRequestCreatePage />}
+          />
+          <Route
+            path="/job-request/pending"
+            element={<JobRequestPendingPage />}
+          />
+          <Route
+            path="/job-request/approved"
+            element={<JobRequestApprovedPage />}
+          />
+          <Route
+            path="/job-request/rejected"
+            element={<JobRequestRejectedPage />}
+          />
+          <Route
+            path="/job-request/history"
+            element={<JobRequestHistoryPage />}
+          />
+          <Route
+            path="/job-request/search"
+            element={<JobRequestSearchPage />}
+          />
+          <Route
+            path="/job-request/reports"
+            element={<JobRequestReportsPage />}
+          />
           {/*  */}
-          <Route path="/job-request" element={<JobRequestPage />} />
           <Route path="/jobs" element={<WorkOrdersPage />} />
           <Route path="/pm-schedule" element={<PMSSchedulePage />} />
           <Route path="/pm" element={<PMSPage />} />
@@ -87,66 +117,6 @@ function App() {
           <Route path="/documents" element={<DocumentsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/users" element={<UserManagementPage />} />
-          <Route
-            path="/job-request"
-            element={
-              // <ProtectedRoute>
-              <JobRequestPage />
-              // </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/job-request/list"
-            element={
-              // <ProtectedRoute>
-              <JobRequestListPage />
-              // </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/job-request/create"
-            element={<JobRequestCreatePage />}
-          />
-          {/* <Route
-            path="/job-request/pending"
-            element={
-                <JobRequestPendingPage />
-            }
-          /> */}
-          {/* <Route
-            path="/job-request/approved"
-            element={
-                <JobRequestApprovedPage />
-            }
-          /> */}
-          {/* <Route
-            path="/job-request/rejected"
-            element={
-                <JobRequestRejectedPage />
-            }
-          /> */}
-          {/* <Route
-            path="/job-request/history"
-            element={
-                <JobRequestHistoryPage />
-            }
-          /> */}
-          <Route
-            path="/job-request/search"
-            element={
-              // <ProtectedRoute>
-              <JobRequestSearchPage />
-              // </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/job-request/reports"
-            element={
-              // <ProtectedRoute>
-              <JobRequestReportsPage />
-              // </ProtectedRoute>
-            }
-          />
           {/* <Route path="/users" element={<UsersPage />} /> */}
         </Route>
 

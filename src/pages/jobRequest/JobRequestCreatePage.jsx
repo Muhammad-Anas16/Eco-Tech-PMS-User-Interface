@@ -25,11 +25,17 @@ const JobRequestCreatePage = () => {
     }
   };
 
+  const handleAddNew = () =>
+    showToast.success("Enter the job request details and click Save.");
+
   return (
     <PageCard>
       <PageToolbar
         title="Create Job Request"
         description="Raise a new maintenance job request"
+        onAdd={() => {
+          handleAddNew();
+        }}
       />
 
       <div className="max-w-xl mt-6">

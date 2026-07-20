@@ -6,10 +6,10 @@ import PageToolbar from "@/components/common/PageToolbar";
 import DataTablePage from "@/components/common/DataTablePage";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
-import { showToast } from "../../lib/toast";
+import { showToast } from "@/lib/showToast";
 
 // title/description/statusFilter/emptyText: parent page se aayenge
-const JobRequestStatusList = ({
+const JobRequestStatusList2 = ({
   title,
   description,
   statusFilter,
@@ -52,7 +52,6 @@ const JobRequestStatusList = ({
     }
   };
 
-  // Ye view sirf listing ke liye hai — edit/delete List page se hoga
   const columns = getJobRequestColumns({
     onEdit: () => showToast.error("Edit from the All Job Requests page."),
     onDelete: () => showToast.error("Delete from the All Job Requests page."),
@@ -81,4 +80,4 @@ const JobRequestStatusList = ({
   );
 };
 
-export default JobRequestStatusList;
+export default JobRequestStatusList2;

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import {
   getJobRequests,
   updateJobRequest,
@@ -16,7 +17,6 @@ import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { showToast } from "../../lib/toast";
-import { useNavigate } from "react-router";
 
 const JobRequestListPage = () => {
   const navigate = useNavigate();
@@ -50,7 +50,6 @@ const JobRequestListPage = () => {
     fetchRequests();
   }, []);
 
-  // "Add" button — dedicated create page pe le jaata hai (dialog nahi)
   const handleAddNew = () => navigate("/job-request/create");
 
   const handleEdit = (request) => {
@@ -119,7 +118,6 @@ const JobRequestListPage = () => {
         title="All Job Requests"
         description="Every job request raised so far"
         actionLabel="Add Job Request"
-        loading={isLoading}
         onRefresh={fetchRequests}
         onAdd={() => {
           handleAddNew();
