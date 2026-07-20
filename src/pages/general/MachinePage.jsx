@@ -114,72 +114,7 @@ const MachinePage = () => {
   });
 
   return (
-    // <PageCard>
-    //   {/* <PageToolbar
-    //     title="Machines"
-    //     description="Manage all plant machines"
-    //     actionLabel="Add Machine"
-    //     onAction={handleAddNew}
-    //   /> */}
-
-    //   <PageToolbar
-    //     title="Machines"
-    //     description="Manage all plant machines"
-    //     addLabel="Add Machine"
-    //     onAdd={handleAddNew}
-    //     onRefresh={fetchMachines}
-    //   />
-
-    //   {isLoading ? (
-    //     <LoadingSkeleton />
-    //   ) : machines.length === 0 ? (
-    //     <EmptyState
-    //       title="No machines yet"
-    //       description="Get started by adding your first machine."
-    //       actionLabel="Add Machine"
-    //       onAction={handleAddNew}
-    //     />
-    //   ) : (
-    //     <DataTablePage
-    //       columns={columns}
-    //       data={machines}
-    //       searchKey="machineName"
-    //     />
-    //   )}
-
-    //   {/* Create/Edit Dialog */}
-    //   <CrudFormDialog
-    //     open={formOpen}
-    //     onOpenChange={setFormOpen}
-    //     title={selectedMachine ? "Edit Machine" : "Add Machine"}
-    //     description={
-    //       selectedMachine
-    //         ? "Update machine details below."
-    //         : "Fill in the details to add a new machine."
-    //     }
-    //   >
-    //     <MachineForm
-    //       defaultValues={selectedMachine || undefined}
-    //       onSubmit={handleFormSubmit}
-    //       isSubmitting={isSubmitting}
-    //     />
-    //   </CrudFormDialog>
-
-    //   {/* Delete Confirm Dialog */}
-    //   <DeleteConfirmDialog
-    //     open={deleteOpen}
-    //     onOpenChange={setDeleteOpen}
-    //     title="Delete Machine?"
-    //     description={`Are you sure you want to delete "${machineToDelete?.machineName}"? This action cannot be undone.`}
-    //     onConfirm={handleConfirmDelete}
-    //     isDeleting={isDeleting}
-    //   />
-    // </PageCard>
-
     <PageCard>
-      {/* ================================
-      Page Toolbar
-  ================================= */}
       <PageToolbar
         title="Machines"
         description="Manage all plant machines"
@@ -190,11 +125,7 @@ const MachinePage = () => {
           handleAddNew();
         }}
       />
-
-      {/* ================================
-      Page Content
-  ================================= */}
-
+      {/* Page Content */}
       {isLoading ? (
         <LoadingSkeleton />
       ) : machines.length === 0 ? (
@@ -215,11 +146,7 @@ const MachinePage = () => {
           searchKey="machineName"
         />
       )}
-
-      {/* ================================
-      Create / Edit Dialog
-  ================================= */}
-
+      {/* Create / Edit Dialog */}
       <CrudFormDialog
         open={formOpen}
         onOpenChange={(open) => {
@@ -241,11 +168,7 @@ const MachinePage = () => {
           isSubmitting={isSubmitting}
         />
       </CrudFormDialog>
-
-      {/* ================================
-      Delete Dialog
-  ================================= */}
-
+      {/* Delete Dialog */}
       <DeleteConfirmDialog
         open={deleteOpen}
         onOpenChange={(open) => {

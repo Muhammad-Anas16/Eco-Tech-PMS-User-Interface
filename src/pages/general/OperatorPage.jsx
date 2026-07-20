@@ -7,7 +7,6 @@ import {
 } from "@/api/operator.api";
 import { getOperatorColumns } from "@/components/operator/operatorColumns";
 import OperatorForm from "@/components/operator/OperatorForm";
-
 import PageCard from "@/components/common/PageCard";
 import PageToolbar from "@/components/common/PageToolbar";
 import DataTablePage from "@/components/common/DataTablePage";
@@ -38,6 +37,7 @@ const OperatorPage = () => {
       const response = await getOperators();
       setOperators(response?.data || []);
     } catch (error) {
+      console.log(error.message);
       showToast.error(
         error?.response?.data?.message || "Failed to load operators.",
       );
@@ -65,6 +65,7 @@ const OperatorPage = () => {
 
   const handleFormSubmit = async (formData) => {
     setIsSubmitting(true);
+    console.log("formData check ", formData);
     try {
       if (selectedOperator) {
         await updateOperator(selectedOperator.id, formData);
@@ -77,6 +78,7 @@ const OperatorPage = () => {
       setFormOpen(false);
       fetchOperators();
     } catch (error) {
+      console.log(error.message);
       showToast.error(
         error?.response?.data?.message || "Something went wrong.",
       );
@@ -84,7 +86,6 @@ const OperatorPage = () => {
       setIsSubmitting(false);
     }
   };
-
   // ===========================
   // Delete handlers
   // ===========================
@@ -103,6 +104,7 @@ const OperatorPage = () => {
     } catch (error) {
       showToast.error(
         error?.response?.data?.message || "Failed to delete operator.",
+        console.log(error.message),
       );
     } finally {
       setIsDeleting(false);
