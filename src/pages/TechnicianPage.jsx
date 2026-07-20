@@ -120,7 +120,13 @@ const TechnicianPage = () => {
         title="Technicians"
         description="Manage internal and external technicians"
         actionLabel="Add Technician"
-        onAction={handleAddNew}
+        loading={isLoading}
+        // onAction={handleAddNew}
+        onRefresh={fetchTechnicians}
+        onAdd={() => {
+          console.log("Add Technician Clicked");
+          handleAddNew();
+        }}
       />
 
       {isLoading ? (

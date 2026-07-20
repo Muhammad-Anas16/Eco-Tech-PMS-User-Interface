@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import {
-  getFaults,
-  createFault,
-  updateFault,
-  deleteFault,
-} from "@/api/fault.api";
-import { getFaultColumns } from "@/components/fault/faultColumns";
-import FaultForm from "@/components/fault/FaultForm";
+  getInventory,
+  createInventory,
+  updateInventory,
+  deleteInventory,
+} from "@/api/inventory.api";
+import { getInventoryColumns } from "@/components/inventory/inventoryColumns";
+import InventoryForm from "@/components/inventory/InventoryForm";
+
 import PageCard from "@/components/common/PageCard";
 import PageToolbar from "@/components/common/PageToolbar";
 import DataTablePage from "@/components/common/DataTablePage";
@@ -16,29 +17,29 @@ import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { showToast } from "../lib/toast";
 
-const FaultPage = () => {
-  const [faults, setFaults] = useState([]);
+const InventoryPage = () => {
+  const [inventory, setInventory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [formOpen, setFormOpen] = useState(false);
-  const [selectedFault, setSelectedFault] = useState(null); // null = create mode
+  const [selectedItem, setSelectedItem] = useState(null); // null = create mode
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [faultToDelete, setFaultToDelete] = useState(null);
+  const [itemToDelete, setItemToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   // ===========================
-  // Fetch all faults
+  // Fetch all inventory items
   // ===========================
-  const fetchFaults = async () => {
+  const fetchInventory = async () => {
     setIsLoading(true);
     try {
-      const response = await getFaults();
-      setFaults(response?.data || []);
+      const response = await getInventory();
+      setInventory(response?.data || []);
     } catch (error) {
       showToast.error(
-        error?.response?.data?.message || "Failed to load faults.",
+        error?.response?.data?.message || "Failed to load inventory.",
       );
     } finally {
       setIsLoading(false);
@@ -46,35 +47,35 @@ const FaultPage = () => {
   };
 
   useEffect(() => {
-    fetchFaults();
+    fetchInventory();
   }, []);
 
   // ===========================
   // Create / Edit handlers
   // ===========================
   const handleAddNew = () => {
-    setSelectedFault(null);
+    setSelectedItem(null);
     setFormOpen(true);
   };
 
-  const handleEdit = (fault) => {
-    setSelectedFault(fault);
+  const handleEdit = (item) => {
+    setSelectedItem(item);
     setFormOpen(true);
   };
 
   const handleFormSubmit = async (formData) => {
     setIsSubmitting(true);
     try {
-      if (selectedFault) {
-        await updateFault(selectedFault.id, formData);
-        showToast.success("Fault updated successfully.");
+      if (selectedItem) {
+        await updateInventory(selectedItem.id, formData);
+        showToast.success("Inventory item updated successfully.");
       } else {
-        await createFault(formData);
-        showToast.success("Fault created successfully.");
+        await createInventory(formData);
+        showToast.success("Inventory item created successfully.");
       }
 
       setFormOpen(false);
-      fetchFaults();
+      fetchInventory();
     } catch (error) {
       showToast.error(
         error?.response?.data?.message || "Something went wrong.",
@@ -87,28 +88,28 @@ const FaultPage = () => {
   // ===========================
   // Delete handlers
   // ===========================
-  const handleDeleteClick = (fault) => {
-    setFaultToDelete(fault);
+  const handleDeleteClick = (item) => {
+    setItemToDelete(item);
     setDeleteOpen(true);
   };
 
   const handleConfirmDelete = async () => {
     setIsDeleting(true);
     try {
-      await deleteFault(faultToDelete.id);
-      showToast.success("Fault deleted successfully.");
+      await deleteInventory(itemToDelete.id);
+      showToast.success("Inventory item deleted successfully.");
       setDeleteOpen(false);
-      fetchFaults();
+      fetchInventory();
     } catch (error) {
       showToast.error(
-        error?.response?.data?.message || "Failed to delete fault.",
+        error?.response?.data?.message || "Failed to delete inventory item.",
       );
     } finally {
       setIsDeleting(false);
     }
   };
 
-  const columns = getFaultColumns({
+  const columns = getInventoryColumns({
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
   });
@@ -116,43 +117,46 @@ const FaultPage = () => {
   return (
     <PageCard>
       <PageToolbar
-        title="Faults"
-        description="Manage fault types linked to machines"
-        actionLabel="Add Fault"
+        title="Inventory"
+        description="Manage spare parts and stock items"
+        actionLabel="Add Item"
         loading={isLoading}
-        onRefresh={fetchFaults}
+        onRefresh={fetchInventory}
         onAdd={() => {
-          // console.log("Add Location Clicked");
           handleAddNew();
         }}
       />
 
       {isLoading ? (
         <LoadingSkeleton />
-      ) : faults.length === 0 ? (
+      ) : inventory.length === 0 ? (
         <EmptyState
-          title="No faults yet"
-          description="Get started by adding your first fault."
-          actionLabel="Add Fault"
+          title="No inventory items yet"
+          description="Get started by adding your first item."
+          actionLabel="Add Item"
           onAction={handleAddNew}
         />
       ) : (
-        <DataTablePage columns={columns} data={faults} searchKey="faultName" />
+        <DataTablePage
+          columns={columns}
+          data={inventory}
+          searchKey="itemName"
+        />
       )}
 
       {/* Create/Edit Dialog */}
       <CrudFormDialog
         open={formOpen}
         onOpenChange={setFormOpen}
-        title={selectedFault ? "Edit Fault" : "Add Fault"}
+        title={selectedItem ? "Edit Inventory Item" : "Add Inventory Item"}
         description={
-          selectedFault
-            ? "Update fault details below."
-            : "Fill in the details to add a new fault."
+          selectedItem
+            ? "Update item details below."
+            : "Fill in the details to add a new inventory item."
         }
       >
-        <FaultForm
-          defaultValues={selectedFault || undefined}
+        <InventoryForm
+          defaultValues={selectedItem || undefined}
           onSubmit={handleFormSubmit}
           isSubmitting={isSubmitting}
         />
@@ -162,8 +166,8 @@ const FaultPage = () => {
       <DeleteConfirmDialog
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
-        title="Delete Fault?"
-        description={`Are you sure you want to delete "${faultToDelete?.faultName}"? This action cannot be undone.`}
+        title="Delete Inventory Item?"
+        description={`Are you sure you want to delete "${itemToDelete?.itemName}"? This action cannot be undone.`}
         onConfirm={handleConfirmDelete}
         isDeleting={isDeleting}
       />
@@ -171,4 +175,4 @@ const FaultPage = () => {
   );
 };
 
-export default FaultPage;
+export default InventoryPage;

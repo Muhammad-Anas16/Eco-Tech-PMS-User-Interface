@@ -120,7 +120,12 @@ const OperatorPage = () => {
         title="Operators"
         description="Manage machine operators"
         actionLabel="Add Operator"
-        onAction={handleAddNew}
+        loading={isLoading}
+        onRefesh={fetchOperators}
+        onAdd={() => {
+          console.log("Add Operator Clicked");
+          handleAddNew();
+        }}
       />
 
       {isLoading ? (

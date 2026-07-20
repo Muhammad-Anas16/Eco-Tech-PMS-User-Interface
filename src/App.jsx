@@ -27,6 +27,7 @@ import TrainingPage from "./pages/TrainingPage";
 import DocumentsPage from "./pages/DocumentsPage";
 import ReportsPage from "./pages/ReportsPage";
 import UserManagementPage from "./pages/UserManagementPage";
+import InventoryPage from "./pages/InventoryPage";
 
 function App() {
   return (
@@ -67,8 +68,8 @@ function App() {
           <Route path="/training" element={<TrainingPage />} />
           <Route path="/documents" element={<DocumentsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
-          <Route path="/users" element={<UserManagementPage  />} />
-          {/* <Route path="/inventory" element={<InventoryPage />} /> */}
+          <Route path="/users" element={<UserManagementPage />} />
+          <Route path="/inventory" element={<InventoryPage />} />
           {/* <Route path="/users" element={<UsersPage />} /> */}
         </Route>
 
