@@ -15,8 +15,10 @@ import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { showToast } from "../../lib/toast";
+import { useNavigate } from "react-router";
 
 const OperatorPage = () => {
+  const navigate = useNavigate();
   const [operators, setOperators] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,9 +30,7 @@ const OperatorPage = () => {
   const [operatorToDelete, setOperatorToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // ===========================
   // Fetch all operators
-  // ===========================
   const fetchOperators = async () => {
     setIsLoading(true);
     try {
@@ -50,9 +50,7 @@ const OperatorPage = () => {
     fetchOperators();
   }, []);
 
-  // ===========================
   // Create / Edit handlers
-  // ===========================
   const handleAddNew = () => {
     setSelectedOperator(null);
     setFormOpen(true);
@@ -61,6 +59,10 @@ const OperatorPage = () => {
   const handleEdit = (operator) => {
     setSelectedOperator(operator);
     setFormOpen(true);
+  };
+
+  const handleView = (record) => {
+    navigate(`/general/operator/${record.id}`);
   };
 
   const handleFormSubmit = async (formData) => {
@@ -86,9 +88,8 @@ const OperatorPage = () => {
       setIsSubmitting(false);
     }
   };
-  // ===========================
+
   // Delete handlers
-  // ===========================
   const handleDeleteClick = (operator) => {
     setOperatorToDelete(operator);
     setDeleteOpen(true);
@@ -112,6 +113,7 @@ const OperatorPage = () => {
   };
 
   const columns = getOperatorColumns({
+    onView: handleView,
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
   });

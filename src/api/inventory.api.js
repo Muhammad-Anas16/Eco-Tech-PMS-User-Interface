@@ -30,6 +30,12 @@ export const getInventory = async () => {
 //   return response.data;
 // };
 
+// get inventory by ID
+export const getInventoryById = async (id) => {
+  const response = await api.get(`/inventory/${id}`);
+  return response.data;
+};
+
 // Update Inventory
 export const updateInventory = async (id, inventoryData) => {
   const response = await api.put(`/inventory/${id}`, inventoryData);

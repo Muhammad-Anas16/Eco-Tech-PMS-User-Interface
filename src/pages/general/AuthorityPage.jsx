@@ -16,8 +16,10 @@ import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { showToast } from "../../lib/toast";
+import { useNavigate } from "react-router";
 
 const AuthorityPage = () => {
+  const navigate = useNavigate();
   const [authorities, setAuthorities] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -29,9 +31,7 @@ const AuthorityPage = () => {
   const [authorityToDelete, setAuthorityToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // ===========================
   // Fetch all authorities
-  // ===========================
   const fetchAuthorities = async () => {
     setIsLoading(true);
     try {
@@ -50,9 +50,7 @@ const AuthorityPage = () => {
     fetchAuthorities();
   }, []);
 
-  // ===========================
   // Create / Edit handlers
-  // ===========================
   const handleAddNew = () => {
     setSelectedAuthority(null);
     setFormOpen(true);
@@ -61,6 +59,10 @@ const AuthorityPage = () => {
   const handleEdit = (authority) => {
     setSelectedAuthority(authority);
     setFormOpen(true);
+  };
+
+  const handleView = (record) => {
+    navigate(`/general/authority/${record.id}`);
   };
 
   const handleFormSubmit = async (formData) => {
@@ -85,9 +87,7 @@ const AuthorityPage = () => {
     }
   };
 
-  // ===========================
   // Delete handlers
-  // ===========================
   const handleDeleteClick = (authority) => {
     setAuthorityToDelete(authority);
     setDeleteOpen(true);
@@ -110,6 +110,7 @@ const AuthorityPage = () => {
   };
 
   const columns = getAuthorityColumns({
+    onView: handleView,
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
   });

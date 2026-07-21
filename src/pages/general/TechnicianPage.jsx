@@ -16,8 +16,10 @@ import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { showToast } from "../../lib/toast";
+import { useNavigate } from "react-router";
 
 const TechnicianPage = () => {
+  const navigate = useNavigate();
   const [technicians, setTechnicians] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -29,9 +31,7 @@ const TechnicianPage = () => {
   const [technicianToDelete, setTechnicianToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // ===========================
   // Fetch all technicians
-  // ===========================
   const fetchTechnicians = async () => {
     setIsLoading(true);
     try {
@@ -50,9 +50,7 @@ const TechnicianPage = () => {
     fetchTechnicians();
   }, []);
 
-  // ===========================
   // Create / Edit handlers
-  // ===========================
   const handleAddNew = () => {
     setSelectedTechnician(null);
     setFormOpen(true);
@@ -61,6 +59,10 @@ const TechnicianPage = () => {
   const handleEdit = (technician) => {
     setSelectedTechnician(technician);
     setFormOpen(true);
+  };
+
+  const handleView = (record) => {
+    navigate(`/general/technician/${record.id}`);
   };
 
   const handleFormSubmit = async (formData) => {
@@ -85,9 +87,7 @@ const TechnicianPage = () => {
     }
   };
 
-  // ===========================
   // Delete handlers
-  // ===========================
   const handleDeleteClick = (technician) => {
     setTechnicianToDelete(technician);
     setDeleteOpen(true);
@@ -110,6 +110,7 @@ const TechnicianPage = () => {
   };
 
   const columns = getTechnicianColumns({
+    onView: handleView,
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
   });

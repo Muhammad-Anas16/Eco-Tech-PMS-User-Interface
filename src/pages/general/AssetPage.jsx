@@ -16,8 +16,10 @@ import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { showToast } from "../../lib/toast";
+import { useNavigate } from "react-router";
 
 const AssetPage = () => {
+  const navigate = useNavigate();
   const [assets, setAssets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -29,9 +31,7 @@ const AssetPage = () => {
   const [assetToDelete, setAssetToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // ===========================
   // Fetch all assets
-  // ===========================
   const fetchAssets = async () => {
     setIsLoading(true);
     try {
@@ -50,9 +50,7 @@ const AssetPage = () => {
     fetchAssets();
   }, []);
 
-  // ===========================
   // Create / Edit handlers
-  // ===========================
   const handleAddNew = () => {
     setSelectedAsset(null);
     setFormOpen(true);
@@ -61,6 +59,10 @@ const AssetPage = () => {
   const handleEdit = (asset) => {
     setSelectedAsset(asset);
     setFormOpen(true);
+  };
+
+  const handleView = (record) => {
+    navigate(`/general/asset/${record.id}`);
   };
 
   const handleFormSubmit = async (formData) => {
@@ -85,9 +87,7 @@ const AssetPage = () => {
     }
   };
 
-  // ===========================
   // Delete handlers
-  // ===========================
   const handleDeleteClick = (asset) => {
     setAssetToDelete(asset);
     setDeleteOpen(true);
@@ -110,6 +110,7 @@ const AssetPage = () => {
   };
 
   const columns = getAssetColumns({
+    onView: handleView,
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
   });

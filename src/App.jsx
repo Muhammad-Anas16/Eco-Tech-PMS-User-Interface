@@ -40,6 +40,15 @@ import JobRequestRejectedPage from "./pages/jobRequest/JobRequestRejectedPage";
 import JobRequestHistoryPage from "./pages/jobRequest/JobRequestHistoryPage";
 import JobRequestSearchPage from "./pages/jobRequest/JobRequestSearchPage";
 import JobRequestReportsPage from "./pages/jobRequest/JobRequestReportsPage";
+import GeneralLayout from "./layouts/GeneralLayout";
+import MachineDetailPage from "./pages/general/details/MachineDetailPage";
+import MachineLocationDetailPage from "./pages/general/details/MachineLocationDetailPage";
+import AssetDetailPage from "./pages/general/details/AssetDetailPage";
+import InventoryDetailPage from "./pages/general/details/InventoryDetailPage";
+import FaultDetailPage from "./pages/general/details/FaultDetailPage";
+import OperatorDetailPage from "./pages/general/details/OperatorDetailPage";
+import TechnicianDetailPage from "./pages/general/details/TechnicianDetailPage";
+import AuthorityDetailPage from "./pages/general/details/AuthorityDetailPage";
 
 function App() {
   return (
@@ -65,17 +74,35 @@ function App() {
           <Route path="/general" element={<GeneralPage />} />
           <Route path="/job-request" element={<JobRequestPage />} />
           {/* General Page */}
-          <Route path="/general/machine" element={<MachinePage />} />
           <Route
-            path="/general/machine-location"
-            element={<MachineLocationPage />}
-          />
-          <Route path="/general/authority" element={<AuthorityPage />} />
-          <Route path="/general/operator" element={<OperatorPage />} />
-          <Route path="/general/technician" element={<TechnicianPage />} />
-          <Route path="/general/fault" element={<FaultPage />} />
-          <Route path="/general/asset" element={<AssetPage />} />
-          <Route path="/general/inventory" element={<InventoryPage />} />
+            path="/general"
+            element={
+              // <ProtectedRoute>
+              <GeneralLayout />
+              // {/* </ProtectedRoute> */}
+            }
+          >
+            <Route index element={<GeneralPage />} />
+            <Route path="machine" element={<MachinePage />} />
+            <Route path="machine/:id" element={<MachineDetailPage />} />
+            <Route path="machine-location" element={<MachineLocationPage />} />
+            <Route
+              path="machine-location/:id"
+              element={<MachineLocationDetailPage />}
+            />
+            <Route path="asset" element={<AssetPage />} />
+            <Route path="asset/:id" element={<AssetDetailPage />} />
+            <Route path="inventory" element={<InventoryPage />} />
+            <Route path="inventory/:id" element={<InventoryDetailPage />} />
+            <Route path="fault" element={<FaultPage />} />
+            <Route path="fault/:id" element={<FaultDetailPage />} />
+            <Route path="operator" element={<OperatorPage />} />
+            <Route path="operator/:id" element={<OperatorDetailPage />} />
+            <Route path="technician" element={<TechnicianPage />} />
+            <Route path="technician/:id" element={<TechnicianDetailPage />} />
+            <Route path="authority" element={<AuthorityPage />} />
+            <Route path="authority/:id" element={<AuthorityDetailPage />} />
+          </Route>
           {/* Job Reqest */}
           <Route path="/job-request/list" element={<JobRequestListPage />} />
           <Route

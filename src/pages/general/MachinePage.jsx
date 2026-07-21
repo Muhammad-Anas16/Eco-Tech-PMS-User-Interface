@@ -15,24 +15,22 @@ import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { showToast } from "../../lib/toast";
 import PageToolbar from "@/components/common/PageToolbar";
+import { useNavigate } from "react-router";
 
 const MachinePage = () => {
+  const navigate = useNavigate();
   const [machines, setMachines] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
   // Create/Edit dialog control
   const [formOpen, setFormOpen] = useState(false);
   const [selectedMachine, setSelectedMachine] = useState(null); // null = create mode
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   // Delete dialog control
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [machineToDelete, setMachineToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // ===========================
   // Fetch all machines
-  // ===========================
   const fetchMachines = async () => {
     setIsLoading(true);
     try {
@@ -61,6 +59,7 @@ const MachinePage = () => {
     setSelectedMachine(machine); // edit mode
     setFormOpen(true);
   };
+  
 
   const handleFormSubmit = async (formData) => {
     setIsSubmitting(true);
@@ -84,9 +83,7 @@ const MachinePage = () => {
     }
   };
 
-  // ===========================
   // Delete handlers
-  // ===========================
   const handleDeleteClick = (machine) => {
     setMachineToDelete(machine);
     setDeleteOpen(true);
@@ -108,7 +105,12 @@ const MachinePage = () => {
     }
   };
 
+  const handleView = (machine) => {
+    navigate(`/general/machine/${machine.id}`);
+  };
+
   const columns = getMachineColumns({
+    onView: handleView,
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
   });

@@ -16,8 +16,10 @@ import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { showToast } from "../../lib/toast";
+import { useNavigate } from "react-router";
 
 const InventoryPage = () => {
+  const navigate = useNavigate();
   const [inventory, setInventory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -29,9 +31,7 @@ const InventoryPage = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // ===========================
   // Fetch all inventory items
-  // ===========================
   const fetchInventory = async () => {
     setIsLoading(true);
     try {
@@ -50,9 +50,7 @@ const InventoryPage = () => {
     fetchInventory();
   }, []);
 
-  // ===========================
   // Create / Edit handlers
-  // ===========================
   const handleAddNew = () => {
     setSelectedItem(null);
     setFormOpen(true);
@@ -61,6 +59,10 @@ const InventoryPage = () => {
   const handleEdit = (item) => {
     setSelectedItem(item);
     setFormOpen(true);
+  };
+
+  const handleView = (record) => {
+    navigate(`/general/inventory/${record.id}`);
   };
 
   const handleFormSubmit = async (formData) => {
@@ -85,9 +87,7 @@ const InventoryPage = () => {
     }
   };
 
-  // ===========================
   // Delete handlers
-  // ===========================
   const handleDeleteClick = (item) => {
     setItemToDelete(item);
     setDeleteOpen(true);
@@ -110,6 +110,7 @@ const InventoryPage = () => {
   };
 
   const columns = getInventoryColumns({
+    onView: handleView,
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
   });

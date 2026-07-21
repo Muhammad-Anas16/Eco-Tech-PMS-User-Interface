@@ -16,8 +16,10 @@ import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { showToast } from "../../lib/toast";
+import { useNavigate } from "react-router";
 
 const MachineLocationPage = () => {
+  const navigate = useNavigate();
   const [locations, setLocations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -29,9 +31,7 @@ const MachineLocationPage = () => {
   const [locationToDelete, setLocationToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // ===========================
   // Fetch all machine locations
-  // ===========================
   const fetchLocations = async () => {
     setIsLoading(true);
     try {
@@ -50,9 +50,7 @@ const MachineLocationPage = () => {
     fetchLocations();
   }, []);
 
-  // ===========================
   // Create / Edit handlers
-  // ===========================
   const handleAddNew = () => {
     setSelectedLocation(null);
     setFormOpen(true);
@@ -61,6 +59,10 @@ const MachineLocationPage = () => {
   const handleEdit = (location) => {
     setSelectedLocation(location);
     setFormOpen(true);
+  };
+
+  const handleView = (record) => {
+    navigate(`/general/machine-location/${record.id}`);
   };
 
   const handleFormSubmit = async (formData) => {
@@ -85,9 +87,7 @@ const MachineLocationPage = () => {
     }
   };
 
-  // ===========================
   // Delete handlers
-  // ===========================
   const handleDeleteClick = (location) => {
     setLocationToDelete(location);
     setDeleteOpen(true);
@@ -110,6 +110,7 @@ const MachineLocationPage = () => {
   };
 
   const columns = getMachineLocationColumns({
+    onView: handleView,
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
   });

@@ -15,8 +15,10 @@ import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { showToast } from "../../lib/toast";
+import { useNavigate } from "react-router";
 
 const FaultPage = () => {
+  const navigate = useNavigate();
   const [faults, setFaults] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,9 +30,7 @@ const FaultPage = () => {
   const [faultToDelete, setFaultToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // ===========================
   // Fetch all faults
-  // ===========================
   const fetchFaults = async () => {
     setIsLoading(true);
     try {
@@ -49,9 +49,7 @@ const FaultPage = () => {
     fetchFaults();
   }, []);
 
-  // ===========================
   // Create / Edit handlers
-  // ===========================
   const handleAddNew = () => {
     setSelectedFault(null);
     setFormOpen(true);
@@ -60,6 +58,10 @@ const FaultPage = () => {
   const handleEdit = (fault) => {
     setSelectedFault(fault);
     setFormOpen(true);
+  };
+
+  const handleView = (record) => {
+    navigate(`/general/fault/${record.id}`);
   };
 
   const handleFormSubmit = async (formData) => {
@@ -84,9 +86,7 @@ const FaultPage = () => {
     }
   };
 
-  // ===========================
   // Delete handlers
-  // ===========================
   const handleDeleteClick = (fault) => {
     setFaultToDelete(fault);
     setDeleteOpen(true);
@@ -109,6 +109,7 @@ const FaultPage = () => {
   };
 
   const columns = getFaultColumns({
+    onView: handleView,
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
   });

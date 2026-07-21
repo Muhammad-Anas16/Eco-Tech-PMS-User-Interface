@@ -1,9 +1,9 @@
 import StatusBadge from "@/components/common/StatusBadge";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 
 // onEdit / onDelete parent (AssetPage) se pass honge
-export const getAssetColumns = ({ onEdit, onDelete }) => [
+export const getAssetColumns = ({ onView, onEdit, onDelete }) => [
   {
     accessorKey: "assetCode",
     header: "Code",
@@ -42,6 +42,13 @@ export const getAssetColumns = ({ onEdit, onDelete }) => [
     header: "Actions",
     cell: ({ row }) => (
       <div className="flex gap-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => onView(row.original)}
+        >
+          <Eye className="h-4 w-4" />
+        </Button>
         <Button
           variant="ghost"
           size="icon"

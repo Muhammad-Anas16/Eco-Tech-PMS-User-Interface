@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 
 // onEdit / onDelete parent (MachineLocationPage) se pass honge
-export const getMachineLocationColumns = ({ onEdit, onDelete }) => [
+export const getMachineLocationColumns = ({ onView, onEdit, onDelete }) => [
   {
     accessorKey: "locationCode",
     header: "Code",
@@ -22,6 +22,13 @@ export const getMachineLocationColumns = ({ onEdit, onDelete }) => [
     header: "Actions",
     cell: ({ row }) => (
       <div className="flex gap-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => onView(row.original)}
+        >
+          <Eye className="h-4 w-4" />
+        </Button>
         <Button
           variant="ghost"
           size="icon"
