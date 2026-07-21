@@ -1,6 +1,7 @@
 import "./App.css";
 import { Route, Routes } from "react-router";
-
+import { Suspense } from "react";
+// Pages
 import HomePage from "./pages/HomePage";
 // general
 import MachinePage from "./pages/general/MachinePage";
@@ -19,7 +20,6 @@ import RegisterPage from "./pages/authentication/RegisterPage";
 import MainLayout from "./layouts/MainLayout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import DashboardPage from "./pages/DashboardPage";
-import { Suspense } from "react";
 import GeneralPage from "./pages/GeneralPage";
 import JobRequestPage from "./pages/JobRequestPage";
 import WorkOrdersPage from "./pages/WorkOrdersPage";
