@@ -74,15 +74,9 @@ function App() {
           <Route path="/general" element={<GeneralPage />} />
           <Route path="/job-request" element={<JobRequestPage />} />
           {/* General Page */}
-          <Route
-            path="/general"
-            element={
-              // <ProtectedRoute>
-              <GeneralLayout />
-              // {/* </ProtectedRoute> */}
-            }
-          >
-            <Route index element={<GeneralPage />} />
+          <Route path="/general" element={<GeneralPage />} />
+
+          <Route path="/general" element={<GeneralLayout />}>
             <Route path="machine" element={<MachinePage />} />
             <Route path="machine/:id" element={<MachineDetailPage />} />
             <Route path="machine-location" element={<MachineLocationPage />} />
@@ -94,12 +88,16 @@ function App() {
             <Route path="asset/:id" element={<AssetDetailPage />} />
             <Route path="inventory" element={<InventoryPage />} />
             <Route path="inventory/:id" element={<InventoryDetailPage />} />
+
             <Route path="fault" element={<FaultPage />} />
             <Route path="fault/:id" element={<FaultDetailPage />} />
+
             <Route path="operator" element={<OperatorPage />} />
             <Route path="operator/:id" element={<OperatorDetailPage />} />
+
             <Route path="technician" element={<TechnicianPage />} />
             <Route path="technician/:id" element={<TechnicianDetailPage />} />
+
             <Route path="authority" element={<AuthorityPage />} />
             <Route path="authority/:id" element={<AuthorityDetailPage />} />
           </Route>
