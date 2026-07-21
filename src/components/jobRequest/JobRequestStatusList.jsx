@@ -7,6 +7,7 @@ import DataTablePage from "@/components/common/DataTablePage";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { showToast } from "../../lib/toast";
+import { useNavigate } from "react-router";
 
 // title/description/statusFilter/emptyText: parent page se aayenge
 const JobRequestStatusList = ({
@@ -15,6 +16,7 @@ const JobRequestStatusList = ({
   statusFilter,
   emptyText,
 }) => {
+  const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -52,6 +54,8 @@ const JobRequestStatusList = ({
     }
   };
 
+  const handleAddNew = () => navigate("/job-request/create");
+
   const columns = getJobRequestColumns({
     onEdit: () => showToast.error("Edit from the All Job Requests page."),
     onDelete: () => showToast.error("Delete from the All Job Requests page."),
@@ -60,7 +64,13 @@ const JobRequestStatusList = ({
 
   return (
     <PageCard>
-      <PageToolbar title={title} description={description} />
+      <PageToolbar
+        title={title}
+        description={description}
+        onAdd={() => {
+          handleAddNew();
+        }}
+      />
 
       {isLoading ? (
         <LoadingSkeleton />

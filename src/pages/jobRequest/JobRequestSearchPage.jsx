@@ -29,7 +29,6 @@ const JobRequestSearchPage = () => {
     fetchRequests();
   }, [requests]);
 
-  // DataTablePage ke apne search box (searchKey) se hi search ho jayega
   const columns = getJobRequestColumns({
     onEdit: () => showToast.error("Edit from the All Job Requests page."),
     onDelete: () => showToast.error("Delete from the All Job Requests page."),
@@ -48,7 +47,10 @@ const JobRequestSearchPage = () => {
           </p>
         </div>
 
-        <button className="inline-flex items-center gap-2 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-slate-800 active:scale-95">
+        <button
+          onClick={fetchRequests}
+          className="inline-flex items-center gap-2 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-slate-800 active:scale-95"
+        >
           <RefreshCw className="h-4 w-4" />
           Refresh
         </button>

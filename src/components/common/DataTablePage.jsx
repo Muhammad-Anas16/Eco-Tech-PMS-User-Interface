@@ -127,10 +127,6 @@ import {
 } from "@/components/ui/table";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 
-// columns: TanStack column defs
-// data: array of rows
-// searchKey: kis field pe search box kaam kare (e.g. "machineName")
-// onRowClick: (row) => void — row pe click karne par (e.g. edit modal kholne ke liye)
 const DataTablePage = ({ columns, data, searchKey, onRowClick }) => {
   const [globalFilter, setGlobalFilter] = useState("");
 
@@ -142,7 +138,6 @@ const DataTablePage = ({ columns, data, searchKey, onRowClick }) => {
     },
     onGlobalFilterChange: setGlobalFilter,
     globalFilterFn: (row, columnId, filterValue) => {
-      // Sirf searchKey field pe hi search chale — poori row pe nahi
       const value = row.getValue(searchKey || columnId);
       return String(value ?? "")
         .toLowerCase()
@@ -207,8 +202,6 @@ const DataTablePage = ({ columns, data, searchKey, onRowClick }) => {
                     <TableCell
                       key={cell.id}
                       onClick={(e) => {
-                        // Actions column (Edit/Delete buttons) pe click se
-                        // row-click trigger na ho — warna dono ek sath chalenge
                         if (cell.column.id === "actions") e.stopPropagation();
                       }}
                     >
