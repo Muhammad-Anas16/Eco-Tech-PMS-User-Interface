@@ -4,7 +4,7 @@ const JobRequestPendingPage = () => (
   <JobRequestStatusList
     title="Pending Approval"
     description="Job requests awaiting review"
-    statusFilter="Open"
+    statusFilter="Pending"
     emptyText="No pending job requests"
   />
 );

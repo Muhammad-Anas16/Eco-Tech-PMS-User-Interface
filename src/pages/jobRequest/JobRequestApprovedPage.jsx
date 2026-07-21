@@ -4,7 +4,7 @@ const JobRequestApprovedPage = () => (
   <JobRequestStatusList
     title="Approved"
     description="Job requests that have been approved and are in progress"
-    statusFilter="In-Progress"
+    statusFilter="Approved"
     emptyText="No approved job requests"
   />
 );

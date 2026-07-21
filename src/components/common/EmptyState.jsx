@@ -1,13 +1,9 @@
-import { Database, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Database } from "lucide-react";
 
 const EmptyState = ({
   icon: Icon = Database,
   title = "No Data Found",
   description = "There are no records available at the moment.",
-  buttonText = "Add New",
-  onAdd,
-  showButton = true,
   children,
 }) => {
   return (
@@ -27,14 +23,6 @@ const EmptyState = ({
 
       {/* Custom Content */}
       {children}
-
-      {/* Button */}
-      {showButton && (
-        <Button onClick={onAdd} className="mt-6">
-          <Plus className="mr-2 h-4 w-4" />
-          {buttonText}
-        </Button>
-      )}
     </div>
   );
 };
