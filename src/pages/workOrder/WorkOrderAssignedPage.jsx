@@ -1,5 +1,5 @@
-// WorkOrderAssignedPage.jsx
 import WorkOrderFilterList from "@/components/workOrder/WorkOrderFilterList";
+
 const WorkOrderAssignedPage = () => (
   <WorkOrderFilterList
     title="Assigned"

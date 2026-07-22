@@ -1,8 +1,6 @@
 import { ClipboardCheck } from "lucide-react";
-
 import ModuleCard from "@/components/ModuleCard";
 import PageCard from "@/components/common/PageCard";
-
 import workOrderModules from "@/data/workOrderModules";
 
 const WorkOrdersPage = () => {

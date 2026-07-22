@@ -11,7 +11,7 @@ import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { showToast } from "../../lib/toast";
 
 // Work Orders = Job Card backend hi hai, bas naam/UI alag hai
-const WorkOrderFilterList = ({ title, description, filterFn, emptyText }) => {
+const WorkOrderFilterList = ({ title, description, filterFn, emptyText, addFunction }) => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -67,7 +67,11 @@ const WorkOrderFilterList = ({ title, description, filterFn, emptyText }) => {
 
   return (
     <PageCard>
-      <PageToolbar title={title} description={description} />
+      <PageToolbar
+        title={title}
+        description={description}
+        onAdd={() => addFunction()}
+      />
 
       {isLoading ? (
         <LoadingSkeleton />
