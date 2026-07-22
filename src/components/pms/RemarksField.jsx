@@ -15,8 +15,8 @@ const RemarksField = ({ form }) => {
         render={({ field }) => (
           <Textarea
             id="remarks"
-            placeholder="Optional Notes"
             rows={4}
+            placeholder="Enter remarks (optional)..."
             className="resize-none"
             {...field}
           />
@@ -24,7 +24,7 @@ const RemarksField = ({ form }) => {
       />
 
       {form.formState.errors.remarks && (
-        <p className="text-sm text-red-500">
+        <p className="text-sm text-destructive">
           {form.formState.errors.remarks.message}
         </p>
       )}

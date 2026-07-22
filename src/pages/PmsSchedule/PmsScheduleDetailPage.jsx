@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router";
 import { getPmsScheduleById } from "@/api/pmsSchedule.api";
 import PageCard from "@/components/common/PageCard";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import RecordDetailCard from "@/components/common/RecordDetailCard";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { showToast } from "@/lib/showToast";
+import { showToast } from "../../lib/toast";
 
 const PmsScheduleDetailPage = () => {
   const { id } = useParams();

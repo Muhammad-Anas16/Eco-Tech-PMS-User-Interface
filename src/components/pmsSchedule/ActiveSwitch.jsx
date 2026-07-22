@@ -1,34 +1,26 @@
-import { Switch } from "@/components/ui/switch";
+import { Controller } from "react-hook-form";
 
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
+import { Switch } from "@/components/ui/switch";
 
 const ActiveSwitch = ({ form }) => {
   return (
-    <FormField
-      control={form.control}
-      name="isActive"
-      render={({ field }) => (
-        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-          <div>
-            <FormLabel>Active</FormLabel>
+    <div className="flex items-center justify-between rounded-lg border p-4">
+      <div className="space-y-1">
+        <label className="text-sm font-medium">Active</label>
 
-            <FormDescription>
-              Inactive schedules won't generate new PMS jobs.
-            </FormDescription>
-          </div>
+        <p className="text-sm text-muted-foreground">
+          Inactive schedules won't generate new PMS jobs.
+        </p>
+      </div>
 
-          <FormControl>
-            <Switch checked={field.value} onCheckedChange={field.onChange} />
-          </FormControl>
-        </FormItem>
-      )}
-    />
+      <Controller
+        control={form.control}
+        name="isActive"
+        render={({ field }) => (
+          <Switch checked={field.value} onCheckedChange={field.onChange} />
+        )}
+      />
+    </div>
   );
 };
 

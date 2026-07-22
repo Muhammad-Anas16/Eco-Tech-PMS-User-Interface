@@ -1,10 +1,4 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Controller } from "react-hook-form";
 
 import {
   Select,
@@ -20,47 +14,49 @@ const MachineSelect = ({
   form,
   name,
   label,
-  machines,
-  loading,
+  machines = [],
+  loading = false,
   required = false,
 }) => {
   return (
-    <FormField
-      control={form.control}
-      name={name}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>{label}</FormLabel>
+    <div className="space-y-2">
+      <label htmlFor={name} className="text-sm font-medium">
+        {label}
+      </label>
 
-          <Select
-            onValueChange={field.onChange}
-            defaultValue={field.value || NONE}
-          >
-            <FormControl>
-              <SelectTrigger>
-                <SelectValue
-                  placeholder={
-                    loading ? "Loading machines..." : "Select machine"
-                  }
-                />
-              </SelectTrigger>
-            </FormControl>
+      <Controller
+        control={form.control}
+        name={name}
+        render={({ field }) => (
+          <Select value={field.value || NONE} onValueChange={field.onChange}>
+            <SelectTrigger id={name}>
+              <SelectValue
+                placeholder={loading ? "Loading machines..." : "Select Machine"}
+              />
+            </SelectTrigger>
 
             <SelectContent>
               {!required && <SelectItem value={NONE}>None</SelectItem>}
 
-              {machines.map((m) => (
-                <SelectItem key={m.machineId} value={String(m.machineId)}>
-                  {m.machineName} ({m.machineCode})
+              {machines.map((machine) => (
+                <SelectItem
+                  key={machine.machineId}
+                  value={String(machine.machineId)}
+                >
+                  {machine.machineName} ({machine.machineCode})
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
+        )}
+      />
 
-          <FormMessage />
-        </FormItem>
+      {form.formState.errors[name] && (
+        <p className="text-sm text-red-500">
+          {form.formState.errors[name]?.message}
+        </p>
       )}
-    />
+    </div>
   );
 };
 

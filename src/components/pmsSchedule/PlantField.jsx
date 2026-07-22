@@ -1,30 +1,28 @@
-import { Input } from "@/components/ui/input";
+import { Controller } from "react-hook-form";
 
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 const PlantField = ({ form }) => {
   return (
-    <FormField
-      control={form.control}
-      name="plant"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Plant</FormLabel>
+    <div className="space-y-2">
+      <label htmlFor="plant" className="text-sm font-medium">
+        Plant
+      </label>
 
-          <FormControl>
-            <Input placeholder="Production Unit" {...field} />
-          </FormControl>
+      <Controller
+        control={form.control}
+        name="plant"
+        render={({ field }) => (
+          <Input id="plant" placeholder="Production Unit" {...field} />
+        )}
+      />
 
-          <FormMessage />
-        </FormItem>
+      {form.formState.errors.plant && (
+        <p className="text-sm text-red-500">
+          {form.formState.errors.plant.message}
+        </p>
       )}
-    />
+    </div>
   );
 };
 

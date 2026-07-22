@@ -8,6 +8,9 @@ export const pmsScheduleSchema = z.object({
   machine5Id: z.string().optional().or(z.literal("")),
   plant: z.string().trim().max(100).optional().or(z.literal("")),
   remarks: z.string().trim().max(300).optional().or(z.literal("")),
+  frequencyDays: z.coerce.number().min(1, "Must be at least 1 day."),
+  nextDueDate: z.string().min(1, "Next due date is required."),
+  status: z.enum(["Active", "Completed"]),
   isActive: z.boolean(),
 });
 
@@ -19,5 +22,8 @@ export const pmsScheduleDefaultValues = {
   machine5Id: "",
   plant: "",
   remarks: "",
+  frequencyDays: 30,
+  nextDueDate: "",
+  status: "Active",
   isActive: true,
 };

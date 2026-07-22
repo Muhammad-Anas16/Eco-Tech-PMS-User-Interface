@@ -12,8 +12,6 @@ import FaultPage from "./pages/general/FaultPage";
 import OperatorPage from "./pages/general/OperatorPage";
 import TechnicianPage from "./pages/general/TechnicianPage";
 import AuthorityPage from "./pages/general/AuthorityPage";
-
-//
 import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/authentication/LoginPage";
 import RegisterPage from "./pages/authentication/RegisterPage";
@@ -23,7 +21,6 @@ import DashboardPage from "./pages/DashboardPage";
 import GeneralPage from "./pages/GeneralPage";
 import JobRequestPage from "./pages/JobRequestPage";
 import WorkOrdersPage from "./pages/WorkOrdersPage";
-import PMSSchedulePage from "./pages/PMSSchedulePage";
 import PMSPage from "./pages/PMSPage";
 import CalibrationPage from "./pages/CalibrationPage";
 import ToolsManagementPage from "./pages/ToolsManagementPage";
@@ -49,6 +46,40 @@ import FaultDetailPage from "./pages/general/details/FaultDetailPage";
 import OperatorDetailPage from "./pages/general/details/OperatorDetailPage";
 import TechnicianDetailPage from "./pages/general/details/TechnicianDetailPage";
 import AuthorityDetailPage from "./pages/general/details/AuthorityDetailPage";
+import PMSSchedulePage from "./pages/PMSSchedulePage";
+import PmsScheduleListPage from "./pages/PmsSchedule/PmsScheduleListPage";
+import PmsScheduleCreatePage from "./pages/PmsSchedule/PmsScheduleCreatePage";
+import PmsScheduleUpcomingPage from "./pages/PmsSchedule/PmsScheduleUpcomingPage";
+import PmsScheduleDueTodayPage from "./pages/PmsSchedule/PmsScheduleDueTodayPage";
+import PmsScheduleOverduePage from "./pages/PmsSchedule/PmsScheduleOverduePage";
+import PmsScheduleCompletedPage from "./pages/PmsSchedule/PmsScheduleCompletedPage";
+import PmsScheduleCalendarPage from "./pages/PmsSchedule/PmsScheduleCalendarPage";
+import PmsScheduleHistoryPage from "./pages/PmsSchedule/PmsScheduleHistoryPage";
+import PmsScheduleSearchPage from "./pages/PmsSchedule/PmsScheduleSearchPage";
+import PmsScheduleReportsPage from "./pages/PmsSchedule/PmsScheduleReportsPage";
+import PmsScheduleDetailPage from "./pages/PmsSchedule/PmsScheduleDetailPage";
+import PmsActivePage from "./pages/pms/PmsActivePage";
+import PmsAssignedPage from "./pages/pms/PmsAssignedPage";
+import PmsInProgressPage from "./pages/pms/PmsInProgressPage";
+import PmsCompletedPage from "./pages/pms/PmsCompletedPage";
+import PmsMissedPage from "./pages/pms/PmsMissedPage";
+import PmsPendingVerificationPage from "./pages/pms/PmsPendingVerificationPage";
+import PmsHistoryPage from "./pages/pms/PmsHistoryPage";
+import PmsSearchPage from "./pages/pms/PmsSearchPage";
+import PmsReportsPage from "./pages/pms/PmsReportsPage";
+import PmsDashboardPage from "./pages/pms/PmsDashboardPage";
+import PmsCreatePage from "./pages/pms/PmsCreatePage";
+import PmsDetailPage from "./pages/pms/PmsDetailPage";
+import WorkOrderListPage from "./pages/workOrder/WorkOrderListPage";
+import WorkOrderCreatePage from "./pages/workOrder/WorkOrderCreatePage";
+import WorkOrderAssignedPage from "./pages/workOrder/WorkOrderAssignedPage";
+import WorkOrderInProgressPage from "./pages/workOrder/WorkOrderInProgressPage";
+import WorkOrderCompletedPage from "./pages/workOrder/WorkOrderCompletedPage";
+import WorkOrderCancelledPage from "./pages/workOrder/WorkOrderCancelledPage";
+import WorkOrderCalendarPage from "./pages/workOrder/WorkOrderCalendarPage";
+import WorkOrderHistoryPage from "./pages/workOrder/WorkOrderHistoryPage";
+import WorkOrderSearchPage from "./pages/workOrder/WorkOrderSearchPage";
+import WorkOrderReportsPage from "./pages/workOrder/WorkOrderReportsPage";
 
 function App() {
   return (
@@ -131,12 +162,98 @@ function App() {
             path="/job-request/reports"
             element={<JobRequestReportsPage />}
           />
-          {/*  */}
-          
-          {/*  */}
-          <Route path="/jobs" element={<WorkOrdersPage />} />
-          <Route path="/pm-schedule" element={<PMSSchedulePage />} />
-          <Route path="/pm" element={<PMSPage />} />
+          {/* ===== PMS SCHEDULE ===== */}
+          <Route path="/pms-schedule" element={<PMSSchedulePage />} />
+          <Route path="/pms-schedule/list" element={<PmsScheduleListPage />} />
+          <Route
+            path="/pms-schedule/create"
+            element={<PmsScheduleCreatePage />}
+          />
+          <Route
+            path="/pms-schedule/upcoming"
+            element={<PmsScheduleUpcomingPage />}
+          />
+          <Route
+            path="/pms-schedule/due-today"
+            element={<PmsScheduleDueTodayPage />}
+          />
+          <Route
+            path="/pms-schedule/overdue"
+            element={<PmsScheduleOverduePage />}
+          />
+          <Route
+            path="/pms-schedule/completed"
+            element={<PmsScheduleCompletedPage />}
+          />
+          <Route
+            path="/pms-schedule/calendar"
+            element={<PmsScheduleCalendarPage />}
+          />
+          <Route
+            path="/pms-schedule/history"
+            element={<PmsScheduleHistoryPage />}
+          />
+          <Route
+            path="/pms-schedule/search"
+            element={<PmsScheduleSearchPage />}
+          />
+          <Route
+            path="/pms-schedule/reports"
+            element={<PmsScheduleReportsPage />}
+          />
+          <Route path="/pms-schedule/:id" element={<PmsScheduleDetailPage />} />
+
+          {/* ===== PMS ===== */}
+          <Route path="/pms" element={<PMSPage />} />
+          <Route path="/pms/active" element={<PmsActivePage />} />
+          <Route path="/pms/assigned" element={<PmsAssignedPage />} />
+          <Route path="/pms/in-progress" element={<PmsInProgressPage />} />
+          <Route path="/pms/completed" element={<PmsCompletedPage />} />
+          <Route path="/pms/missed" element={<PmsMissedPage />} />
+          <Route
+            path="/pms/pending-verification"
+            element={<PmsPendingVerificationPage />}
+          />
+          <Route path="/pms/history" element={<PmsHistoryPage />} />
+          <Route path="/pms/search" element={<PmsSearchPage />} />
+          <Route path="/pms/reports" element={<PmsReportsPage />} />
+          <Route path="/pms/dashboard" element={<PmsDashboardPage />} />
+          <Route path="/pms/create" element={<PmsCreatePage />} />
+          <Route path="/pms/:id" element={<PmsDetailPage />} />
+
+          {/* ===== WORK ORDERS (= Job Card backend) ===== */}
+          <Route path="/work-orders" element={<WorkOrdersPage />} />
+          <Route path="/work-orders/list" element={<WorkOrderListPage />} />
+          <Route path="/work-orders/create" element={<WorkOrderCreatePage />} />
+          <Route
+            path="/work-orders/assigned"
+            element={<WorkOrderAssignedPage />}
+          />
+          <Route
+            path="/work-orders/in-progress"
+            element={<WorkOrderInProgressPage />}
+          />
+          <Route
+            path="/work-orders/completed"
+            element={<WorkOrderCompletedPage />}
+          />
+          <Route
+            path="/work-orders/cancelled"
+            element={<WorkOrderCancelledPage />}
+          />
+          <Route
+            path="/work-orders/calendar"
+            element={<WorkOrderCalendarPage />}
+          />
+          <Route
+            path="/work-orders/history"
+            element={<WorkOrderHistoryPage />}
+          />
+          <Route path="/work-orders/search" element={<WorkOrderSearchPage />} />
+          <Route
+            path="/work-orders/reports"
+            element={<WorkOrderReportsPage />}
+          />
           <Route path="/calibration" element={<CalibrationPage />} />
           <Route path="/tools" element={<ToolsManagementPage />} />
           <Route path="/work-instructions" element={<WorkInstructionsPage />} />
