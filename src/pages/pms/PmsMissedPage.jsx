@@ -1,14 +1,27 @@
-// PmsMissedPage.jsx
+import { useNavigate } from "react-router";
 import PmsFilterList from "@/components/pms/PmsFilterList";
 
 const today = new Date().toISOString().split("T")[0];
 
-const PmsMissedPage = () => (
-  <PmsFilterList
-    title="Missed PMS"
-    description="PMS jobs past their end date and still not completed"
-    filterFn={(p) => p.endDate && p.endDate < today && p.status !== "Completed"}
-    emptyText="No missed PMS jobs"
-  />
-);
+const PmsMissedPage = () => {
+  const navigate = useNavigate();
+
+  const handleCreateFunction = () => {
+    navigate("/pms/create");
+  };
+
+  return (
+    <PmsFilterList
+      title="Missed PMS"
+      description="PMS jobs past their end date and still not completed"
+      filterFn={(p) =>
+        p.endDate && p.endDate < today && p.status !== "Completed"
+      }
+      emptyText="No missed PMS jobs"
+      showAdd={true}
+      onAddFunction={handleCreateFunction}
+    />
+  );
+};
+
 export default PmsMissedPage;

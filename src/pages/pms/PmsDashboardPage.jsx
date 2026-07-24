@@ -1,13 +1,17 @@
-// PmsDashboardPage.jsx — client-side computed summary cards
 import { useEffect, useState } from "react";
+
 import { getPmsRecords } from "@/api/pms.api";
+import { showToast } from "@/lib/toast";
+
 import PageCard from "@/components/common/PageCard";
 import PageToolbar from "@/components/common/PageToolbar";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
+
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { showToast } from "@/lib/toast";
+import { useNavigate } from "react-router";
 
 const PmsDashboardPage = () => {
+  const navigate = useNavigate();
   const [records, setRecords] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -24,10 +28,13 @@ const PmsDashboardPage = () => {
         setIsLoading(false);
       }
     };
+
     fetchRecords();
   }, []);
 
-  if (isLoading) return <LoadingSkeleton />;
+  if (isLoading) {
+    return <LoadingSkeleton />;
+  }
 
   const counts = {
     "New Job": records.filter((r) => r.status === "New Job").length,
@@ -43,8 +50,10 @@ const PmsDashboardPage = () => {
       <PageToolbar
         title="PMS Dashboard"
         description="Quick overview of all PMS jobs"
+        onAdd={() => navigate("/pms/create")}
       />
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+
+      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {Object.entries(counts).map(([label, count]) => (
           <Card key={label} className="rounded-xl shadow-sm">
             <CardHeader className="pb-2">
@@ -52,8 +61,9 @@ const PmsDashboardPage = () => {
                 {label}
               </CardTitle>
             </CardHeader>
+
             <CardContent>
-              <div className="text-2xl font-bold">{count}</div>
+              <p className="text-3xl font-bold">{count}</p>
             </CardContent>
           </Card>
         ))}
@@ -61,4 +71,5 @@ const PmsDashboardPage = () => {
     </PageCard>
   );
 };
+
 export default PmsDashboardPage;

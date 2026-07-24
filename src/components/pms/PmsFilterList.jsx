@@ -21,6 +21,7 @@ const PmsFilterList = ({
   filterFn,
   emptyText,
   showAdd = false,
+  onAddFunction,
 }) => {
   const navigate = useNavigate();
   const [records, setRecords] = useState([]);
@@ -130,6 +131,7 @@ const PmsFilterList = ({
         description={description}
         actionLabel={showAdd ? "Add PMS Record" : undefined}
         onAction={showAdd ? handleAddNew : undefined}
+        onAdd={() => onAddFunction()}
       />
 
       {isLoading ? (

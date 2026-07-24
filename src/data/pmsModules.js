@@ -1,6 +1,6 @@
 import {
   Wrench,
-  UserCheck,
+  // UserCheck,
   PlayCircle,
   CircleCheckBig,
   AlertTriangle,
@@ -21,15 +21,15 @@ const pmsModules = [
     bg: "bg-blue-50",
     border: "border-blue-500",
   },
-  {
-    id: 2,
-    title: "Assigned PMS",
-    icon: UserCheck,
-    path: "/pms/assigned",
-    color: "text-cyan-600",
-    bg: "bg-cyan-50",
-    border: "border-cyan-500",
-  },
+  // {
+  //   id: 2,
+  //   title: "Assigned PMS",
+  //   icon: UserCheck,
+  //   path: "/pms/assigned",
+  //   color: "text-cyan-600",
+  //   bg: "bg-cyan-50",
+  //   border: "border-cyan-500",
+  // },
   {
     id: 3,
     title: "In Progress",
