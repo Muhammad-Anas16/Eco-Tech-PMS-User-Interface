@@ -2,6 +2,7 @@
 import PageCard from "@/components/common/PageCard";
 import PageToolbar from "@/components/common/PageToolbar";
 import EmptyState from "@/components/common/EmptyState";
+
 const PmsReportsPage = () => (
   <PageCard>
     <PageToolbar title="Reports" description="PMS analytics" />

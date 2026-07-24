@@ -1,19 +1,35 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { getPmsRecords, deletePms } from "@/api/pms.api";
+import { getPmsRecords, updatePms, deletePms, createPms } from "@/api/pms.api";
 import { getPmsColumns } from "@/components/pms/pmsColumns";
+import PmsForm from "@/components/pms/PmsForm";
+
 import PageCard from "@/components/common/PageCard";
 import PageToolbar from "@/components/common/PageToolbar";
 import DataTablePage from "@/components/common/DataTablePage";
+import CrudFormDialog from "@/components/common/CrudFormDialog";
 import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
-import { showToast } from "../../lib/toast";
+import { showToast } from "@/lib/toast";
 
-const PmsFilterList = ({ title, description, filterFn, emptyText }) => {
+// showAdd: true = "Active PMS" page pe naya record bhi bana sakte hain
+// baaki filtered pages (Assigned/InProgress/Completed/etc) sirf view/edit/delete/status karengi
+const PmsFilterList = ({
+  title,
+  description,
+  filterFn,
+  emptyText,
+  showAdd = false,
+}) => {
   const navigate = useNavigate();
   const [records, setRecords] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [formOpen, setFormOpen] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [toDelete, setToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -37,11 +53,51 @@ const PmsFilterList = ({ title, description, filterFn, emptyText }) => {
     fetchRecords();
   }, []);
 
-  const handleView = (r) => navigate(`/pms/${r.id}`);
-  const handleEdit = (r) => navigate(`/pms/${r.id}`);
+  const handleView = (r) => navigate(`/pms/detail/${r.id}`);
+  const handleAddNew = () => {
+    setSelected(null);
+    setFormOpen(true);
+  };
+  const handleEdit = (r) => {
+    setSelected(r);
+    setFormOpen(true);
+  };
   const handleDeleteClick = (r) => {
     setToDelete(r);
     setDeleteOpen(true);
+  };
+
+  const handleStatusChange = async (record, newStatus) => {
+    try {
+      await updatePms(record.id, { ...record, status: newStatus });
+      showToast.success("Status updated.");
+      fetchRecords();
+    } catch (error) {
+      showToast.error(
+        error?.response?.data?.message || "Failed to update status.",
+      );
+    }
+  };
+
+  const handleFormSubmit = async (formData) => {
+    setIsSubmitting(true);
+    try {
+      if (selected) {
+        await updatePms(selected.id, formData);
+        showToast.success("PMS record updated successfully.");
+      } else {
+        await createPms(formData);
+        showToast.success("PMS record created successfully.");
+      }
+      setFormOpen(false);
+      fetchRecords();
+    } catch (error) {
+      showToast.error(
+        error?.response?.data?.message || "Something went wrong.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleConfirmDelete = async () => {
@@ -64,11 +120,17 @@ const PmsFilterList = ({ title, description, filterFn, emptyText }) => {
     onView: handleView,
     onEdit: handleEdit,
     onDelete: handleDeleteClick,
+    onStatusChange: handleStatusChange,
   });
 
   return (
     <PageCard>
-      <PageToolbar title={title} description={description} />
+      <PageToolbar
+        title={title}
+        description={description}
+        actionLabel={showAdd ? "Add PMS Record" : undefined}
+        onAction={showAdd ? handleAddNew : undefined}
+      />
 
       {isLoading ? (
         <LoadingSkeleton />
@@ -76,6 +138,8 @@ const PmsFilterList = ({ title, description, filterFn, emptyText }) => {
         <EmptyState
           title={emptyText}
           description="Nothing to show here right now."
+          actionLabel={showAdd ? "Add PMS Record" : undefined}
+          onAction={showAdd ? handleAddNew : undefined}
         />
       ) : (
         <DataTablePage
@@ -86,11 +150,28 @@ const PmsFilterList = ({ title, description, filterFn, emptyText }) => {
         />
       )}
 
+      <CrudFormDialog
+        open={formOpen}
+        onOpenChange={setFormOpen}
+        title={selected ? "Edit PMS Record" : "Add PMS Record"}
+        description={
+          selected
+            ? "Update PMS details below."
+            : "Fill in the details to log a new PMS job."
+        }
+      >
+        <PmsForm
+          defaultValues={selected || undefined}
+          onSubmit={handleFormSubmit}
+          isSubmitting={isSubmitting}
+        />
+      </CrudFormDialog>
+
       <DeleteConfirmDialog
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
         title="Delete PMS Record?"
-        description="Are you sure you want to delete this record? This action cannot be undone."
+        description="Are you sure you want to delete this PMS record? This action cannot be undone."
         onConfirm={handleConfirmDelete}
         isDeleting={isDeleting}
       />

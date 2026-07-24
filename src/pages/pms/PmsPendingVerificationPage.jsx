@@ -1,5 +1,6 @@
 // PmsPendingVerificationPage.jsx
 import PmsFilterList from "@/components/pms/PmsFilterList";
+
 const PmsPendingVerificationPage = () => (
   <PmsFilterList
     title="Pending Verification"

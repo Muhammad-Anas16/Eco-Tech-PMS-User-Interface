@@ -1,5 +1,6 @@
 // PmsSearchPage.jsx
 import PmsFilterList from "@/components/pms/PmsFilterList";
+
 const PmsSearchPage = () => (
   <PmsFilterList
     title="Search"

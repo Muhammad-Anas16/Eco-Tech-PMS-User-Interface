@@ -1,11 +1,11 @@
-// PmsDashboardPage.jsx — real mini-dashboard, client-side computed counts
+// PmsDashboardPage.jsx — client-side computed summary cards
 import { useEffect, useState } from "react";
 import { getPmsRecords } from "@/api/pms.api";
 import PageCard from "@/components/common/PageCard";
 import PageToolbar from "@/components/common/PageToolbar";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { showToast } from "../../lib/toast";
+import { showToast } from "@/lib/toast";
 
 const PmsDashboardPage = () => {
   const [records, setRecords] = useState([]);
@@ -61,5 +61,4 @@ const PmsDashboardPage = () => {
     </PageCard>
   );
 };
-
 export default PmsDashboardPage;
