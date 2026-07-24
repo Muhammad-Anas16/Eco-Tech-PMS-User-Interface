@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 
-const DataTablePage = ({ columns, data, searchKey, onRowClick, addFunc }) => {
+const DataTablePage = ({ columns, data, searchKey, onRowClick }) => {
   const [globalFilter, setGlobalFilter] = useState("");
   const table = useReactTable({
     data,

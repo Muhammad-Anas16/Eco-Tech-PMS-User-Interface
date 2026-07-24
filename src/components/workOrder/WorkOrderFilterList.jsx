@@ -9,9 +9,16 @@ import DeleteConfirmDialog from "@/components/common/DeleteConfirmDialog";
 import EmptyState from "@/components/common/EmptyState";
 import LoadingSkeleton from "@/components/common/LoadingSkeleton";
 import { showToast } from "../../lib/toast";
+import { updateJobCardStatus } from "../../api/jobCard.api";
 
 // Work Orders = Job Card backend hi hai, bas naam/UI alag hai
-const WorkOrderFilterList = ({ title, description, filterFn, emptyText, addFunction }) => {
+const WorkOrderFilterList = ({
+  title,
+  description,
+  filterFn,
+  emptyText,
+  addFunction,
+}) => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +30,7 @@ const WorkOrderFilterList = ({ title, description, filterFn, emptyText, addFunct
     setIsLoading(true);
     try {
       const response = await getJobCards();
+      console.log("Checking Response DataTable Line 32", response);
       const all = response?.data || [];
       setOrders(filterFn ? all.filter(filterFn) : all);
     } catch (error) {
@@ -60,9 +68,22 @@ const WorkOrderFilterList = ({ title, description, filterFn, emptyText, addFunct
     }
   };
 
+  const handleStatusChange = async (order, newStatus) => {
+    try {
+      await updateJobCardStatus(order.id, newStatus);
+      showToast.success("Status updated.");
+      fetchOrders();
+    } catch (error) {
+      showToast.error(
+        error?.response?.data?.message || "Failed to update status.",
+      );
+    }
+  };
+
   const columns = getWorkOrderColumns({
     onView: handleView,
     onDelete: handleDeleteClick,
+    onStatusChange: handleStatusChange,
   });
 
   return (

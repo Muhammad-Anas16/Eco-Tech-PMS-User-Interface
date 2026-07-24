@@ -5,6 +5,11 @@ export const createJobRequest = async (data) => {
   return response.data;
 };
 
+export const convertJobRequestToJobCard = async (id, jobType) => {
+  const response = await api.post(`/job-requests/${id}/convert`, { jobType });
+  return response.data;
+};
+
 export const getJobRequests = async () => {
   const response = await api.get("/job-requests");
   return response.data;

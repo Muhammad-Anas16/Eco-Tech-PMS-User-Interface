@@ -3,9 +3,10 @@ import JobRequestStatusList from "@/components/jobRequest/JobRequestStatusList";
 const JobRequestApprovedPage = () => (
   <JobRequestStatusList
     title="Approved"
-    description="Job requests that have been approved and are in progress"
+    description="Approved job requests — convert them into work orders"
     statusFilter="Approved"
     emptyText="No approved job requests"
+    showConvert={true}
   />
 );
 
