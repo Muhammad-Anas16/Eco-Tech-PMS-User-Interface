@@ -1,9 +1,7 @@
 import "./App.css";
-import { Route, Routes } from "react-router";
 import { Suspense } from "react";
-// Pages
 import HomePage from "./pages/HomePage";
-// general
+import { Route, Routes } from "react-router";
 import MachinePage from "./pages/general/MachinePage";
 import MachineLocationPage from "./pages/general/MachineLocationPage";
 import AssetPage from "./pages/general/AssetPage";
@@ -76,7 +74,7 @@ import WorkOrderAssignedPage from "./pages/workOrder/WorkOrderAssignedPage";
 import WorkOrderInProgressPage from "./pages/workOrder/WorkOrderInProgressPage";
 import WorkOrderCompletedPage from "./pages/workOrder/WorkOrderCompletedPage";
 import WorkOrderCancelledPage from "./pages/workOrder/WorkOrderCancelledPage";
-import WorkOrderCalendarPage from "./pages/workOrder/WorkOrderCalendarPage";
+// import WorkOrderCalendarPage from "./pages/workOrder/WorkOrderCalendarPage";
 import WorkOrderHistoryPage from "./pages/workOrder/WorkOrderHistoryPage";
 import WorkOrderSearchPage from "./pages/workOrder/WorkOrderSearchPage";
 import WorkOrderReportsPage from "./pages/workOrder/WorkOrderReportsPage";
@@ -242,10 +240,10 @@ function App() {
             path="/work-orders/cancelled"
             element={<WorkOrderCancelledPage />}
           />
-          <Route
+          {/* <Route
             path="/work-orders/calendar"
             element={<WorkOrderCalendarPage />}
-          />
+          /> */}
           <Route
             path="/work-orders/history"
             element={<WorkOrderHistoryPage />}
