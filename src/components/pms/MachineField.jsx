@@ -30,8 +30,8 @@ const MachineField = ({ form, machines = [], loading = false }) => {
               {machines.length > 0 ? (
                 machines.map((machine) => (
                   <SelectItem
-                    key={machine.machineId}
-                    value={String(machine.machineId)}
+                    key={machine.id}
+                    value={String(machine.id)}
                   >
                     {machine.machineName} ({machine.machineCode})
                   </SelectItem>
